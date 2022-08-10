@@ -1,0 +1,84 @@
+@import 'variables.css';
+
+@tailwind base;
+@layer base {
+  .x-input {
+    @apply h-10 px-2 text-base leading-5 text-left rounded md:px-4 md:h-12;
+    @apply w-full appearance-none bg-none focus:ring hover:border-gray-5;
+    @apply transition border outline-none placeholder-gray-4;
+  }
+
+  .x-button {
+    @apply relative inline-flex items-center text-base font-medium rounded outline-none focus:ring w-max;
+  }
+
+  .x-button-icon {
+    @apply justify-center w-10 h-10 leading-10;
+  }
+  .x-button-md {
+    @apply h-10 px-4 leading-10;
+  }
+  .x-button-xl {
+    @apply h-12 px-8 leading-12;
+  }
+
+  .x-button-text {
+    @apply text-current hover:bg-black-opacity-1;
+  }
+  .dark .x-button-text {
+    @apply text-current hover:bg-white-opacity-2;
+  }
+  .x-button-primary {
+    @apply text-white bg-primary hover:bg-primary-dark;
+  }
+  .x-button-warning {
+    @apply text-black bg-warning hover:bg-warning-bright focus:ring-warning-opacity-5;
+  }
+  .x-button-ghost {
+    @apply text-white bg-white-opacity-3 hover:bg-white-opacity-4 focus:ring-white-opacity-5;
+  }
+
+  .x-grid {
+    @apply grid items-center w-5/6 max-w-6xl grid-cols-1 mx-auto lg:grid-cols-10 gap-y-16 lg:gap-x-16 lg:gap-y-32;
+  }
+
+  .x-col-contents {
+    @apply max-w-lg mx-auto prose prose-lg text-center lg:max-w-none lg:text-left;
+  }
+  .x-row-contents {
+    @apply max-w-lg mx-auto prose prose-lg text-center lg:max-w-none lg:col-span-6 lg:col-start-3;
+  }
+
+  .x-py {
+    @apply py-24 lg:py-48;
+  }
+  .x-pt {
+    @apply pt-24 lg:pt-48;
+  }
+  .x-row-reverse {
+    @apply row-start-1 lg:row-start-auto;
+  }
+
+  .x-z-0 {
+    transform: translateZ(0);
+  }
+  .x-z-100 {
+    transform: translateZ(100px);
+  }
+
+  .divider {
+    @apply h-px bg-gray-1;
+  }
+
+  /* 轮播图样式 */
+  #slideshow .x-image {
+    @apply absolute top-0 left-0;
+  }
+  #slideshow figure {
+    transition: opacity 1s linear;
+    @apply absolute top-0 left-0 opacity-0;
+  }
+  #slideshow figure.active {
+    opacity: 1;
+  }
+}

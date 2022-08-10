@@ -1,0 +1,81 @@
+@use 'sass:math';
+@import 'variables.css';
+
+@mixin aspect-ratio($width, $height) {
+  &:before {
+    display: block;
+    content: '';
+    width: 100%;
+    padding-top: math.div($height, $width) * 100%;
+  }
+  > .content {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+  }
+}
+@mixin aspect-ratio-after($width, $height) {
+  &:after {
+    display: block;
+    content: '';
+    width: 100%;
+    padding-top: math.div($height, $width) * 100%;
+  }
+  > .content {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+  }
+}
+
+@tailwind base;
+@layer base {
+  /* 懒加载的前提，默认不能加载背景图片 */
+  .lazy {
+    background-image: none !important;
+  }
+  .x-aspect-ratio {
+    @include aspect-ratio-after(1, 1);
+  }
+  .x-aspect-ratio-3-4 {
+    @include aspect-ratio-after(3, 4);
+  }
+  .x-aspect-ratio-1440-900 {
+    @include aspect-ratio-after(1440, 900);
+  }
+
+  .x-image {
+    @apply relative w-full max-w-lg mx-auto lg:mx-0 lg:max-w-none;
+    figure {
+      @apply bg-no-repeat bg-cover mt-0 mb-0;
+    }
+    &[data-src='listen'] {
+      aspect-ratio: 896 / 850;
+      @include aspect-ratio(896, 850);
+      figure {
+        @apply absolute top-0 right-0;
+        width: calc(976 / 896 * 100%);
+        aspect-ratio: 976 / 1030;
+        @include aspect-ratio(976, 1030);
+        &:lang(zh) {
+          @apply bg-listen-cn lg:bg-listen-cn2x xl:bg-listen-cn3x;
+        }
+        &:lang(en) {
+          @apply bg-listen-en lg:bg-listen-en2x xl:bg-listen-en3x;
+        }
+      }
+    }
+
+  }
+
+  .home-carousel {
+    @apply absolute flex items-center w-full h-full;
+  }
+  .home-carousel .x-image {
+    @apply flex-shrink-0 w-full;
+  }
+}
