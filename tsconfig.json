@@ -22,6 +22,8 @@
       "assets/*": ["./assets/*"],
       "components/*": ["./components/*"],
       "hooks/*": ["./hooks/*"],
+      "core/*": ["./core/*"],
+      "http/*": ["./http/*"],
       "pages/*": ["./pages/*"],
       "public/*": ["./public/*"],
       "store/*": ["./store/*"],

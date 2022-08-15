@@ -59,6 +59,8 @@ const nextConfig = {
       assets: path.resolve(__dirname, 'assets'),
       components: path.resolve(__dirname, 'components'),
       hooks: path.resolve(__dirname, 'hooks'),
+      core: path.resolve(__dirname, 'core'),
+      http: path.resolve(__dirname, 'http'),
       pages: path.resolve(__dirname, 'pages'),
       public: path.resolve(__dirname, 'public'),
       store: path.resolve(__dirname, 'store'),
