@@ -42,7 +42,7 @@ interface Articles {
   publishedAt: string;
 }
 
-const Home: NextPage<GetStaticProps> = ({ name }) => {
+const Home: NextPage<GetStaticProps> = () => {
   const { data } = useQuery(['articles'], getArticles);
 
   const list: Articles[] = useMemo(() => {
@@ -76,39 +76,43 @@ const Home: NextPage<GetStaticProps> = ({ name }) => {
     <Layout>
       <>
         <PageHeader title={'TX CMS API'} />
-        <div className="w-full h-full overflow-auto space-y-12 p-4 bg-[#f1f1f1]">
-          {list.map((row) => {
-            return (
-              <div
-                className="w-full flex bg-white box-border overflow-hidden rounded-md shadow-md"
-                style={{ height: 220 }}
-                key={row.id}
-              >
+        <div className="w-full h-full overflow-auto bg-[#f1f1f1]">
+          <div className="space-y-8 p-6">
+            {list.map((row) => {
+              return (
                 <div
-                  className="h-full bg-cover bg-center"
-                  style={{
-                    backgroundImage:
-                      row.image.provider === 'local'
-                        ? `url('http://localhost:1337${row.image.url}')`
-                        : row.image.url,
-                    width: 360,
-                  }}
-                />
-                <div className="h-full flex-1 flex flex-col items-start justify-start p-6">
-                  <div className="w-full h-10 text-2xl font-bold flex items-center">
-                    <p>{row.title}</p>
-                  </div>
-                  <div className="w-full flex-1 mt-2 text-gray-500">{row.description}</div>
-                  <div className="w-full flex justify-between items-center">
-                    <div>{dayjs.utc(row.updatedAt).local().format('YYYY-MM-DD HH:mm:ss')}</div>
-                    <button className="btn btn-sm btn-outline btn-ghost rounded-none px-8 text-gray-400 border-gray-300">
-                      了解更多
-                    </button>
+                  className="w-full flex bg-white box-border overflow-hidden rounded-md shadow-md"
+                  style={{ height: 220 }}
+                  key={row.id}
+                >
+                  <div
+                    className="h-full bg-cover bg-center"
+                    style={{
+                      backgroundImage:
+                        row.image.provider === 'local'
+                          ? `url('http://localhost:1337${row.image.url}')`
+                          : row.image.url,
+                      width: 360,
+                    }}
+                  />
+                  <div className="h-full flex-1 flex flex-col items-start justify-start p-6">
+                    <div className="h-10 text-2xl font-bold flex items-center">
+                      <span className="overflow-hidden whitespace-nowrap overflow-ellipsis">
+                        {row.title}
+                      </span>
+                    </div>
+                    <div className="w-full flex-1 mt-2 text-gray-500">{row.description}</div>
+                    <div className="w-full flex justify-between items-center">
+                      <div>{dayjs.utc(row.updatedAt).local().format('YYYY-MM-DD HH:mm:ss')}</div>
+                      <button className="btn btn-sm btn-outline btn-ghost rounded-none px-8 text-gray-400 border-gray-300">
+                        了解更多
+                      </button>
+                    </div>
                   </div>
                 </div>
-              </div>
-            );
-          })}
+              );
+            })}
+          </div>
         </div>
       </>
     </Layout>

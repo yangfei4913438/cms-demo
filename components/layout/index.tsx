@@ -1,6 +1,7 @@
 import { FC, ReactNode, useState } from 'react';
 import cx from 'classnames';
 import NextLink from 'components/nextLink';
+import Header from 'components/Header';
 
 interface LayoutProps {
   children: ReactNode;
@@ -33,24 +34,19 @@ const Layout: FC<LayoutProps> = ({ children }) => {
   ];
 
   return (
-    <main className="absolute top-0 right-0 bottom-0 left-0 box-border overflow-hidden">
-      <section className="h-full flex">
-        <aside className="w-52 h-full bg-gray-200">
-          <header className="text-xl font-bold text-center flex px-4">
-            <NextLink href="/" className="btn btn-lg btn-ghost px-2 w-full">
-              <span className="text-2xl lowercase">查询范例</span>
-            </NextLink>
-          </header>
-          <hr />
-          <ul className="p-4 menu menu-compact gap-0.5 flex flex-col">
+    <main className="absolute top-0 right-0 bottom-0 left-0 box-border overflow-hidden flex flex-col">
+      <Header />
+      <section className="flex-1 flex">
+        <aside className="z-1 w-52 min-w-max h-full bg-gray-300 shadow-[1px_2px_10px_1px_#050505]">
+          <ul className="p-4 menu menu-compact gap-6 flex flex-col">
             {menus.map((menu) => {
               return (
                 <li key={menu.id} onClick={() => setActive(menu.id)}>
                   <NextLink
                     href={menu.url}
-                    className={cx('flex gap-4', active === menu.id && 'active')}
+                    className={cx('flex gap-4 demo', active === menu.id && 'active')}
                   >
-                    <span className="flex-1 text-base font-bold">{menu.name}</span>
+                    <span>{menu.name}</span>
                   </NextLink>
                 </li>
               );
