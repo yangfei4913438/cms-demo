@@ -58,6 +58,7 @@ const nextConfig = {
       ...config.resolve.alias,
       assets: path.resolve(__dirname, 'assets'),
       components: path.resolve(__dirname, 'components'),
+      conf: path.resolve(__dirname, 'conf'),
       hooks: path.resolve(__dirname, 'hooks'),
       core: path.resolve(__dirname, 'core'),
       http: path.resolve(__dirname, 'http'),
