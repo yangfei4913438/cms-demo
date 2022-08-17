@@ -1,56 +1,22 @@
-import { useMemo, type FC } from 'react';
+import { type FC, useEffect } from 'react';
 import dayjs from 'dayjs';
+import { useQuery } from '@tanstack/react-query';
+import { queryKeys } from 'core/queryConsts';
+import { getArticles } from 'http/articles';
+import useUserInfo from 'hooks/useUserInfo';
+import { useAppContext } from 'store/index';
 
-export interface Articles {
-  id: number;
-  title: string;
-  content: string;
-  description: string;
-  image: {
-    name: string;
-    width: number;
-    height: number;
-    hash: string;
-    url: string;
-    provider: string;
-  };
-  locale: string;
-  updatedAt: string;
-  createdAt: string;
-  publishedAt: string;
-}
+const List: FC = () => {
+  const { userInfo } = useUserInfo();
+  const { list, setList } = useAppContext();
 
-const List: FC<{ data: any[] }> = ({ data }) => {
-  const list: Articles[] = useMemo(() => {
-    if (data) {
-      return data.map((row: any) => {
-        const attributes = row.attributes.images.data.attributes;
-        return {
-          id: row.id,
-          title: row.attributes.title,
-          description: row.attributes.description,
-          content: row.attributes.content,
-          image: {
-            name: attributes.name,
-            url: attributes.url,
-            width: attributes.width,
-            height: attributes.height,
-            provider: attributes.provider,
-            hash: attributes.hash,
-          },
-          locale: row.attributes.locale,
-          updatedAt: row.attributes.updatedAt,
-          createdAt: row.attributes.createdAt,
-          publishedAt: row.attributes.publishedAt,
-        };
-      });
-    }
-    return [];
-  }, [data]);
+  useQuery(queryKeys.articles, () => getArticles(userInfo?.jwt!).then((res) => setList(res)), {
+    enabled: !!userInfo?.jwt,
+  });
 
   return (
     <div className="space-y-8 p-6">
-      {list.map((row) => {
+      {list?.map((row) => {
         return (
           <div
             className="w-full flex bg-white box-border overflow-hidden rounded-md shadow-md"

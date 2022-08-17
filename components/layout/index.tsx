@@ -1,4 +1,4 @@
-import { FC, ReactNode, useState } from 'react';
+import type { FC, ReactNode } from 'react';
 import Header from 'components/Header';
 import Filter from 'components/Filter';
 
@@ -10,8 +10,6 @@ interface LayoutProps {
 
 const Layout: FC<LayoutProps> = ({ children }) => {
   const { userInfo } = useUserInfo();
-
-  const [active, setActive] = useState(-1);
 
   return (
     <main className="absolute top-0 right-0 bottom-0 left-0 box-border overflow-hidden flex flex-col">
