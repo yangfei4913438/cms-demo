@@ -12,9 +12,9 @@ const Layout: FC<LayoutProps> = ({ children }) => {
   const { userInfo } = useUserInfo();
 
   return (
-    <main className="absolute top-0 right-0 bottom-0 left-0 box-border overflow-hidden flex flex-col">
+    <main className="relative w-screen h-screen box-border overflow-hidden flex flex-col">
       <Header />
-      <section className="flex-1 flex">
+      <section className="flex-1 flex h-full overflow-auto">
         {userInfo ? (
           <>
             <Filter />
