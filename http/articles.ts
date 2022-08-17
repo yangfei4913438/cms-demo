@@ -27,6 +27,7 @@ export const getArticles = (token: string) => {
 
 // 模糊匹配
 export const filterArticles = (token: string, search: string) => {
+  if (!search) return Promise.resolve([]);
   return fetch(`http://localhost:1337/api/articles?populate=*&_q=${search}`, {
     method: 'GET',
     headers: {

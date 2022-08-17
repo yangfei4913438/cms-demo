@@ -8,29 +8,34 @@ import queryClient from 'core/queryClient';
 
 const Filter = () => {
   const [edit, setEdit] = useState({ filter: '' });
-  const [filter, setFilter] = useState('');
 
-  const { setList } = useAppContext();
+  const { setList, setFilter, filter } = useAppContext();
 
   const { userInfo } = useUserInfo();
 
   useQuery(
     queryKeys.filterArticles(filter),
-    () =>
-      filterArticles(userInfo?.jwt!, filter).then((res) => {
-        setList(res);
-        setFilter('');
-      }),
+    () => filterArticles(userInfo?.jwt!, filter).then(setList),
     {
-      enabled: !!userInfo?.jwt && !!filter,
+      enabled: !!userInfo?.jwt && !!filter && !!edit.filter,
     }
   );
 
   const handleSearch = async () => {
-    if (!edit.filter) {
+    if (edit.filter === '') {
+      // 先清空筛选条件，否则全部文章列表无法发起请求
+      setFilter('');
+      // 重新请求全部文章列表
       await queryClient.invalidateQueries(queryKeys.articles);
     } else {
+      // 更新筛选条件
       setFilter(edit.filter);
+    }
+  };
+
+  const handleKeyDown = async (e: KeyboardEvent) => {
+    if (e.key === 'Enter') {
+      await handleSearch();
     }
   };
 
@@ -55,6 +60,8 @@ const Filter = () => {
                   };
                 });
               }}
+              // @ts-ignore
+              onKeyDown={handleKeyDown}
             />
             <button className="btn" onClick={handleSearch}>
               搜索
