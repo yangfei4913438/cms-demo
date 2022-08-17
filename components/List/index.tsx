@@ -19,7 +19,7 @@ const List: FC = () => {
     <>
       {list?.length === 0 && !!filter && (
         <div className="w-full h-full flex justify-center items-center text-3xl text-gray-500">
-          哎呀～没有匹配的数据哦😂
+          🤣哎呀，没有找到匹配的数据哦～
         </div>
       )}
       <div className="space-y-8 p-6">
