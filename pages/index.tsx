@@ -37,7 +37,7 @@ const Home: NextPage<GetStaticProps> = () => {
       <>
         <PageHeader title={'TX CMS API'} />
         <div className="w-full h-full overflow-auto bg-[#f1f1f1]">
-          {userInfo ? <List data={data} /> : <div>还没登录呢</div>}
+          <List data={data} />
         </div>
       </>
     </Layout>

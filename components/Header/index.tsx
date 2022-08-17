@@ -11,11 +11,14 @@ const Header = () => {
   const { userInfo, login, logout } = useUserInfo();
 
   const loginId = 'login-model';
-  const registerId = 'register-model';
 
   const handleLogin = async () => {
-    await login(edit.username, edit.password);
-    setEdit({ username: '', password: '' });
+    const res = await login(edit.username, edit.password);
+    if (res.status === 400) {
+      alert(res.message);
+    } else {
+      setEdit({ username: '', password: '' });
+    }
   };
 
   const handleLogout = async () => {
@@ -31,7 +34,7 @@ const Header = () => {
       <div className="h-full flex items-center gap-2 text-white">
         {userInfo ? (
           <label
-            className="btn btn-ghost"
+            className="btn btn-ghost text-lg"
             onClick={async (e) => {
               e.preventDefault();
               await handleLogout();
@@ -40,13 +43,10 @@ const Header = () => {
             注销
           </label>
         ) : (
-          <label htmlFor={loginId} className="btn btn-ghost">
+          <label htmlFor={loginId} className="btn btn-ghost text-lg">
             登录
           </label>
         )}
-        <label htmlFor={registerId} className="btn btn-ghost">
-          注册
-        </label>
       </div>
 
       <input type="checkbox" id={loginId} className="modal-toggle" />
@@ -59,6 +59,7 @@ const Header = () => {
               <input
                 type="text"
                 placeholder="请输入您的用户名或邮箱"
+                value={edit.username}
                 className="flex-1 input input-md input-bordered outline-none"
                 onChange={(e) => {
                   setEdit((prev: any) => {
@@ -75,6 +76,7 @@ const Header = () => {
               <input
                 type="password"
                 placeholder="请输入您的登录密码"
+                value={edit.password}
                 className="flex-1 input input-md input-bordered outline-none"
                 onChange={(e) => {
                   setEdit((prev: any) => {

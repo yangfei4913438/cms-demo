@@ -32,8 +32,8 @@ const securityHeaders = [
 
 // 多语言配置
 const i18n = {
-  defaultLocale: 'zh', // 默认语言
-  locales: ['zh', 'en'], // 可用的语言
+  defaultLocale: 'zh-Hans', // 默认语言
+  locales: ['zh-Hans', 'en'], // 可用的语言
   localeDetection: true, // 启用嗅探浏览器语言，加快语言检测速度
 };
 

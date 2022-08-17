@@ -17,8 +17,12 @@ const useUserInfo = () => {
 
   const login = async (username: string, password: string) => {
     const data = await userLogin(username, password);
-    localStorage.setValue('userInfo', data, conf.encrypt, conf.salt);
-    setUserInfo(data);
+    if (data?.jwt) {
+      localStorage.setValue('userInfo', data, conf.encrypt, conf.salt);
+      setUserInfo(data);
+      return { status: 200 };
+    }
+    return { status: 400, message: data.error.message };
   };
 
   const logout = async () => {
