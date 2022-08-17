@@ -8,6 +8,7 @@ import { getArticles } from 'http/articles';
 import PageHeader from 'components/pageHeader';
 import Layout from 'components/layout';
 import List from 'components/List';
+import { queryKeys } from 'core/queryConsts';
 
 import useUserInfo from 'hooks/useUserInfo';
 
@@ -16,7 +17,7 @@ dayjs.extend(utc);
 
 export const getStaticProps: GetStaticProps = async ({ locale }) => {
   // 获取操作(因为没有权限，所以不能预先在服务端获取数据)
-  // await queryClient.prefetchQuery(['articles'], () => getArticles('token'));
+  // await queryClient.prefetchQuery(queryKeys.articles, () => getArticles('token'));
 
   return {
     props: {
@@ -28,7 +29,7 @@ export const getStaticProps: GetStaticProps = async ({ locale }) => {
 const Home: NextPage<GetStaticProps> = () => {
   const { userInfo } = useUserInfo();
 
-  const { data } = useQuery(['articles'], () => getArticles(userInfo?.jwt!), {
+  const { data } = useQuery(queryKeys.articles, () => getArticles(userInfo?.jwt!), {
     enabled: !!userInfo?.jwt,
   });
 
