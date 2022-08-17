@@ -44,22 +44,24 @@ const Filter = () => {
       <label className="label">
         <span className="label-text font-bold text-xl">模糊匹配</span>
       </label>
-      <label className="input-group">
-        <input
-          type="text"
-          value={localFilter}
-          placeholder="请输入匹配关键字"
-          className="input input-bordered"
-          onChange={(e) => {
-            setLocalFilter(e.target.value);
-          }}
-          // @ts-ignore
-          onKeyDown={handleKeyDown}
-        />
-        <button className="btn" onClick={handleSearch}>
-          搜索
-        </button>
-      </label>
+      <div className="p-4 bg-white rounded-md shadow-md">
+        <label className="input-group">
+          <input
+            type="text"
+            value={localFilter}
+            placeholder="请输入匹配关键字"
+            className="input input-bordered w-full"
+            onChange={(e) => {
+              setLocalFilter(e.target.value);
+            }}
+            // @ts-ignore
+            onKeyDown={handleKeyDown}
+          />
+          <button className="btn" onClick={handleSearch}>
+            搜索
+          </button>
+        </label>
+      </div>
     </div>
   );
 };

@@ -12,7 +12,9 @@ export const getArticles = (token: string) => {
       },
       fields: ['title', 'description', 'updatedAt', 'createdAt'],
     },
-    { encodeValuesOnly: true }
+    {
+      encodeValuesOnly: true, // prettify URL
+    }
   );
   return fetch(`http://localhost:1337/api/articles?${argsStr}`, {
     method: 'GET',
