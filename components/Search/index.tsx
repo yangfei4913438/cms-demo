@@ -2,15 +2,16 @@ import { ChangeEvent, useState } from 'react';
 import { useAppContext } from 'store/index';
 import queryClient from 'core/queryClient';
 import { queryKeys } from 'core/queryConsts';
+import conf from 'conf';
 
 const Search = () => {
-  const [visible, setVisible] = useState(true);
-  const { setSearch, time } = useAppContext();
+  const [visible, setVisible] = useState(conf.filters.search);
+  const { setSearch, time, sort } = useAppContext();
   const [localSearch, setLocalSearch] = useState('');
 
   const handleSearch = async (key: string = localSearch) => {
     setSearch(key);
-    await queryClient.invalidateQueries(queryKeys.filterArticles({ search: key, time }));
+    await queryClient.invalidateQueries(queryKeys.filterArticles({ search: key, time, sort }));
   };
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {

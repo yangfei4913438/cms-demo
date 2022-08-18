@@ -9,7 +9,7 @@ import { formatTime } from 'utils/times';
 
 const List: FC = () => {
   const { userInfo } = useUserInfo();
-  const { list, setList, search, time } = useAppContext();
+  const { list, setList, search, time, sort } = useAppContext();
 
   const query = () => {
     let options = {};
@@ -28,10 +28,16 @@ const List: FC = () => {
         filters,
       };
     }
+    if (sort.length) {
+      options = {
+        ...options,
+        sort: sort.map((o) => `${o.name}:${o.sort}`),
+      };
+    }
     return getArticles(userInfo?.jwt!, options).then(setList);
   };
 
-  useQuery(queryKeys.filterArticles({ search, time }), query, {
+  useQuery(queryKeys.filterArticles({ search, time, sort }), query, {
     // 存在令牌才可以发起查询
     enabled: !!userInfo?.jwt,
   });

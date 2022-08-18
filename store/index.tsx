@@ -20,15 +20,22 @@ interface ITime {
   end: string;
 }
 
+interface ISort {
+  name: ArticleSortType;
+  sort: 'asc' | 'desc';
+}
+
 interface IStoreContext {
   userInfo?: IUserInfo;
   setUserInfo: React.Dispatch<React.SetStateAction<IUserInfo | undefined>>;
-  list?: any[];
+  list?: Articles[];
   setList: React.Dispatch<React.SetStateAction<any[] | undefined>>;
   search: string;
   setSearch: React.Dispatch<React.SetStateAction<string>>;
   time: ITime;
   setTime: React.Dispatch<React.SetStateAction<ITime>>;
+  sort: ISort[];
+  setSort: React.Dispatch<React.SetStateAction<ISort[]>>;
 }
 
 const initData: IStoreContext = {
@@ -38,6 +45,8 @@ const initData: IStoreContext = {
   setSearch: () => undefined,
   time: { type: 'createdAt', start: '', end: '' },
   setTime: () => undefined,
+  sort: [],
+  setSort: () => undefined,
 };
 
 const StoreContext = createContext<IStoreContext>(initData);
@@ -46,11 +55,13 @@ export const AppWrapper: React.FC<{ children: React.ReactNode }> = ({ children }
   // 用户信息，包含认证jwt
   const [userInfo, setUserInfo] = useState<IUserInfo>();
   // 展示的列表
-  const [list, setList] = useState<any[]>();
+  const [list, setList] = useState<Articles[]>();
   // 搜索信息
-  const [search, setSearch] = useState(initData.search);
+  const [search, setSearch] = useState<string>(initData.search);
   // 时间信息
   const [time, setTime] = useState<ITime>(initData.time);
+  // 排序对象
+  const [sort, setSort] = useState<ISort[]>(initData.sort);
 
   const state: IStoreContext = {
     userInfo,
@@ -61,6 +72,8 @@ export const AppWrapper: React.FC<{ children: React.ReactNode }> = ({ children }
     setSearch,
     time,
     setTime,
+    sort,
+    setSort,
   };
 
   return <StoreContext.Provider value={state}>{children}</StoreContext.Provider>;

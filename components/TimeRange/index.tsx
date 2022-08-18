@@ -3,16 +3,17 @@ import cx from 'classnames';
 import { useAppContext } from 'store';
 import queryClient from 'core/queryClient';
 import { queryKeys } from 'core/queryConsts';
+import conf from 'conf';
 
 const TimeRange = () => {
-  const { time, setTime, search } = useAppContext();
+  const { time, setTime, search, sort } = useAppContext();
 
-  const [visible, setVisible] = useState(true);
+  const [visible, setVisible] = useState(conf.filters.timeRange);
   const [localTime, setLocalTime] = useState(time);
 
   const handleSearch = async (stime: typeof time = localTime) => {
     setTime(stime);
-    await queryClient.invalidateQueries(queryKeys.filterArticles({ search, time: stime }));
+    await queryClient.invalidateQueries(queryKeys.filterArticles({ search, time: stime, sort }));
   };
 
   const handleQuery = async () => {

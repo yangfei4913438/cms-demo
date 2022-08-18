@@ -1,6 +1,7 @@
 import type { FC, ReactNode } from 'react';
 import Header from 'components/Header';
 import Search from 'components/Search';
+import Sort from 'components/Sort';
 import TimeRange from 'components/TimeRange';
 
 import useUserInfo from 'hooks/useUserInfo';
@@ -22,6 +23,7 @@ const Layout: FC<LayoutProps> = ({ children }) => {
               <div className="p-6 space-y-2">
                 <Search />
                 <TimeRange />
+                <Sort />
               </div>
             </aside>
             <main className="flex-1 h-full">{children}</main>
