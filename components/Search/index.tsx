@@ -2,7 +2,7 @@ import useUserInfo from 'hooks/useUserInfo';
 import { useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { queryKeys } from 'core/queryConsts';
-import { filterArticles } from 'http/articles';
+import { getArticles } from 'http/articles';
 import { useAppContext } from 'store/index';
 import queryClient from 'core/queryClient';
 
@@ -15,7 +15,7 @@ const Search = () => {
 
   useQuery(
     queryKeys.filterArticles(search),
-    () => filterArticles(userInfo?.jwt!, search).then(setList),
+    () => getArticles(userInfo?.jwt!, { _q: search }).then(setList),
     {
       enabled: !!userInfo?.jwt && !!search && !!localSearch,
     }
