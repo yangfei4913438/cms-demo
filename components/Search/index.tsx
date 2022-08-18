@@ -40,7 +40,7 @@ const Search = () => {
         <span className="label-text font-bold text-xl">模糊匹配</span>
         <input
           type="checkbox"
-          className="!toggle !toggle-primary checked:bg-none"
+          className="!toggle checked:bg-none"
           checked={visible}
           onChange={handleSwitch}
         />

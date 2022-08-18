@@ -37,7 +37,7 @@ const TimeRange = () => {
         <span className="label-text font-bold text-xl">时间范围筛选</span>
         <input
           type="checkbox"
-          className="!toggle !toggle-primary checked:bg-none"
+          className="!toggle checked:bg-none"
           checked={visible}
           onChange={handleSwitch}
         />
