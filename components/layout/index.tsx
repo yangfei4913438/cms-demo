@@ -1,6 +1,6 @@
 import type { FC, ReactNode } from 'react';
 import Header from 'components/Header';
-import Filter from 'components/Filter';
+import Search from 'components/Search';
 import TimeRange from 'components/TimeRange';
 
 import useUserInfo from 'hooks/useUserInfo';
@@ -20,7 +20,7 @@ const Layout: FC<LayoutProps> = ({ children }) => {
           <>
             <aside className="z-1 w-52 min-w-max h-full bg-[#e0e0e0] shadow-[1px_2px_10px_1px_#050505]">
               <div className="p-6 space-y-2">
-                <Filter />
+                <Search />
                 <TimeRange />
               </div>
             </aside>

@@ -8,17 +8,13 @@ const TimeRange = () => {
   const [showTime, setShowTime] = useState(true);
 
   // 格式化时间
-  const formatTime = (time: string, date: boolean = false) => {
-    let fmt = 'YYYY-MM-DD HH:mm:ss';
-    if (date) {
-      fmt = 'YYYY-MM-DD';
-    }
-    return dayjs(time).format(fmt);
+  const formatTime = (time: string) => {
+    return dayjs(time).format('YYYY-MM-DD HH:mm:ss');
   };
 
   const handleQuery = () => {
-    const stime = start ? formatTime(start, !showTime) : '';
-    const etime = end ? formatTime(end, !showTime) : '';
+    const stime = start ? formatTime(start) : '';
+    const etime = end ? formatTime(end) : '';
     console.log('stime:', stime);
     console.log('etime:', etime);
   };
@@ -26,13 +22,6 @@ const TimeRange = () => {
   const handleShowTime = (e: ChangeEvent<HTMLInputElement>) => {
     const isShow = e.target.checked;
     setShowTime(() => isShow);
-    if (isShow) {
-      setStart((prev) => (prev ? `${prev}T00:00:00` : ''));
-      setEnd((prev) => (prev ? `${prev}T00:00:00` : ''));
-    } else {
-      setStart((prev) => (prev ? prev.split('T')[0] : ''));
-      setEnd((prev) => (prev ? prev.split('T')[0] : ''));
-    }
   };
 
   return (
@@ -40,7 +29,9 @@ const TimeRange = () => {
       <label className="font-bold text-xl">时间范围筛选</label>
       <div className="bg-white p-4 rounded-md shadow-md">
         <label className="label cursor-pointer max-w-max space-x-2">
-          <span className="label-text text-lg font-bold">时分秒</span>
+          <span className="label-text text-lg font-bold">
+            使用 {showTime ? '创建' : '更新'} 时间
+          </span>
           <input
             type="checkbox"
             className="!toggle !toggle-primary checked:bg-none"
@@ -52,7 +43,7 @@ const TimeRange = () => {
         <label className="input-group">
           <span>开始</span>
           <input
-            type={showTime ? 'datetime-local' : 'date'}
+            type="datetime-local"
             step={1}
             value={start}
             placeholder="请输入匹配关键字"
@@ -65,7 +56,7 @@ const TimeRange = () => {
         <label className="input-group mt-2">
           <span>结束</span>
           <input
-            type={showTime ? 'datetime-local' : 'date'}
+            type="datetime-local"
             step={1}
             value={end}
             placeholder="请输入匹配关键字"

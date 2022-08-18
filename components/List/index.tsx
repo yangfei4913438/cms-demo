@@ -8,16 +8,16 @@ import { useAppContext } from 'store/index';
 
 const List: FC = () => {
   const { userInfo } = useUserInfo();
-  const { list, setList, filter } = useAppContext();
+  const { list, setList, search } = useAppContext();
 
   useQuery(queryKeys.articles, () => getArticles(userInfo?.jwt!).then(setList), {
     // 存在令牌且不存在筛选条件，才可以发起查询
-    enabled: !!userInfo?.jwt && !filter,
+    enabled: !!userInfo?.jwt && !search,
   });
 
   return (
     <>
-      {list?.length === 0 && !!filter && (
+      {list?.length === 0 && !!search && (
         <div className="w-full h-full flex justify-center items-center text-3xl text-gray-500">
           🤣哎呀，没有找到匹配的数据哦～
         </div>

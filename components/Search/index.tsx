@@ -6,30 +6,30 @@ import { filterArticles } from 'http/articles';
 import { useAppContext } from 'store/index';
 import queryClient from 'core/queryClient';
 
-const Filter = () => {
-  const [localFilter, setLocalFilter] = useState('');
+const Search = () => {
+  const [localSearch, setLocalSearch] = useState('');
 
-  const { setList, setFilter, filter } = useAppContext();
+  const { setList, setSearch, search } = useAppContext();
 
   const { userInfo } = useUserInfo();
 
   useQuery(
-    queryKeys.filterArticles(filter),
-    () => filterArticles(userInfo?.jwt!, filter).then(setList),
+    queryKeys.filterArticles(search),
+    () => filterArticles(userInfo?.jwt!, search).then(setList),
     {
-      enabled: !!userInfo?.jwt && !!filter && !!localFilter,
+      enabled: !!userInfo?.jwt && !!search && !!localSearch,
     }
   );
 
   const handleSearch = async () => {
-    if (localFilter === '') {
+    if (localSearch === '') {
       // 先清空筛选条件，否则全部文章列表无法发起请求
-      setFilter('');
+      setSearch('');
       // 重新请求全部文章列表
       await queryClient.invalidateQueries(queryKeys.articles);
     } else {
       // 更新筛选条件
-      setFilter(localFilter);
+      setSearch(localSearch);
     }
   };
 
@@ -48,11 +48,11 @@ const Filter = () => {
         <label className="input-group">
           <input
             type="text"
-            value={localFilter}
+            value={localSearch}
             placeholder="请输入匹配关键字"
             className="input input-bordered w-full"
             onChange={(e) => {
-              setLocalFilter(e.target.value);
+              setLocalSearch(e.target.value);
             }}
             // @ts-ignore
             onKeyDown={handleKeyDown}
@@ -66,4 +66,4 @@ const Filter = () => {
   );
 };
 
-export default Filter;
+export default Search;
