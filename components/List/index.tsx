@@ -1,25 +1,46 @@
-import { type FC, useEffect } from 'react';
+import { type FC, useCallback, useEffect } from 'react';
 import dayjs from 'dayjs';
 import { useQuery } from '@tanstack/react-query';
 import { queryKeys } from 'core/queryConsts';
 import { getArticles } from 'http/articles';
 import useUserInfo from 'hooks/useUserInfo';
 import { useAppContext } from 'store/index';
+import { formatTime } from 'utils/times';
 
 const List: FC = () => {
   const { userInfo } = useUserInfo();
-  const { list, setList, search } = useAppContext();
+  const { list, setList, search, time } = useAppContext();
 
-  useQuery(queryKeys.articles, () => getArticles(userInfo?.jwt!).then(setList), {
-    // 存在令牌且不存在筛选条件，才可以发起查询
-    enabled: !!userInfo?.jwt && !search,
+  const query = () => {
+    let options = {};
+    if (search) {
+      options = { _q: search };
+    }
+    if (!!time.start && !!time.end) {
+      const filters = {
+        [time.type]: {
+          $gte: formatTime(time.start),
+          $lte: formatTime(time.end),
+        },
+      };
+      options = {
+        ...options,
+        filters,
+      };
+    }
+    return getArticles(userInfo?.jwt!, options).then(setList);
+  };
+
+  useQuery(queryKeys.filterArticles({ search, time }), query, {
+    // 存在令牌才可以发起查询
+    enabled: !!userInfo?.jwt,
   });
 
   return (
     <>
-      {list?.length === 0 && !!search && (
+      {list?.length === 0 && (
         <div className="w-full h-full flex justify-center items-center text-3xl text-gray-500">
-          🤣哎呀，没有找到匹配的数据哦～
+          🤣哎呀，没有数据显示哦～
         </div>
       )}
       <div className="space-y-8 p-6">

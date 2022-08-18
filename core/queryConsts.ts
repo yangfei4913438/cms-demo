@@ -1,7 +1,5 @@
 // 查询key列表
 export const queryKeys = {
-  // 文章列表
-  articles: ['articles'],
-  // 搜索key
-  filterArticles: (search: string) => ['articles', search],
+  // 生成文章列表过滤关键字
+  filterArticles: (filter: object) => ['articles', JSON.stringify(filter)],
 };
