@@ -71,8 +71,16 @@ const Sort = () => {
     });
   };
 
+  const showOrder = (type: ArticleSortType) => {
+    const idx = list.indexOf(type);
+    if (idx === -1) {
+      return '';
+    }
+    return <span className="inline-block font-bold text-[16px]"> (No.{idx + 1}) </span>;
+  };
+
   return (
-    <div className="space-y-3">
+    <div>
       <label className="label cursor-pointer max-w-max space-x-2">
         <span className="label-text font-bold text-xl">排序</span>
         <input
@@ -92,7 +100,7 @@ const Sort = () => {
               checked={list.includes('title')}
               onChange={(e) => handleSortCheck(e, 'title')}
             />
-            <span className="label-text text-xl">标题</span>
+            <span className="label-text text-xl">标题 {showOrder('title')}</span>
           </label>
           {list.includes('title') && (
             <label className="label cursor-pointer space-x-2">
@@ -117,7 +125,7 @@ const Sort = () => {
               checked={list.includes('createdAt')}
               onChange={(e) => handleSortCheck(e, 'createdAt')}
             />
-            <span className="label-text text-xl">创建时间</span>
+            <span className="label-text text-xl">创建时间 {showOrder('createdAt')}</span>
           </label>
           {list.includes('createdAt') && (
             <label className="label cursor-pointer space-x-2">
@@ -142,7 +150,7 @@ const Sort = () => {
               checked={list.includes('updatedAt')}
               onChange={(e) => handleSortCheck(e, 'updatedAt')}
             />
-            <span className="label-text text-xl">更新时间</span>
+            <span className="label-text text-xl">更新时间 {showOrder('updatedAt')}</span>
           </label>
           {list.includes('updatedAt') && (
             <label className="label cursor-pointer space-x-2">
