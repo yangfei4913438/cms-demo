@@ -12,6 +12,12 @@ const conf = {
     timeRange: false,
     // 排序
     sort: false,
+    // 排序
+    pagination: false,
+    // 每页最小数据量
+    pageSizeMin: 5,
+    // 每页最大数据量
+    pageSizeMax: 50,
   },
 };
 

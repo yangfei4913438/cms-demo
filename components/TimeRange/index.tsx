@@ -6,14 +6,25 @@ import { queryKeys } from 'core/queryConsts';
 import conf from 'conf';
 
 const TimeRange = () => {
-  const { time, setTime, search, sort } = useAppContext();
+  const { time, setTime, search, sort, pagination } = useAppContext();
 
   const [visible, setVisible] = useState(conf.filters.timeRange);
   const [localTime, setLocalTime] = useState(time);
 
   const handleSearch = async (stime: typeof time = localTime) => {
     setTime(stime);
-    await queryClient.invalidateQueries(queryKeys.filterArticles({ search, time: stime, sort }));
+    await queryClient.invalidateQueries(
+      queryKeys.filterArticles({
+        search,
+        time: stime,
+        sort,
+        pagination: {
+          page: pagination.page,
+          pageSize: pagination.pageSize,
+          visible: pagination.visible,
+        },
+      })
+    );
   };
 
   const handleQuery = async () => {

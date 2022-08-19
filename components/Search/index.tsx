@@ -6,12 +6,23 @@ import conf from 'conf';
 
 const Search = () => {
   const [visible, setVisible] = useState(conf.filters.search);
-  const { setSearch, time, sort } = useAppContext();
+  const { setSearch, time, sort, pagination } = useAppContext();
   const [localSearch, setLocalSearch] = useState('');
 
   const handleSearch = async (key: string = localSearch) => {
     setSearch(key);
-    await queryClient.invalidateQueries(queryKeys.filterArticles({ search: key, time, sort }));
+    await queryClient.invalidateQueries(
+      queryKeys.filterArticles({
+        search: key,
+        time,
+        sort,
+        pagination: {
+          page: pagination.page,
+          pageSize: pagination.pageSize,
+          visible: pagination.visible,
+        },
+      })
+    );
   };
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {

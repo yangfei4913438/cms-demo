@@ -9,12 +9,20 @@ import { formatTime } from 'utils/times';
 
 const List: FC = () => {
   const { userInfo } = useUserInfo();
-  const { list, setList, search, time, sort } = useAppContext();
+  const { list, setList, search, time, sort, pagination, setPagination } = useAppContext();
 
   const query = () => {
     let options = {};
+    if (pagination.visible) {
+      options = {
+        pagination: {
+          page: pagination.page,
+          pageSize: pagination.pageSize,
+        },
+      };
+    }
     if (search) {
-      options = { _q: search };
+      options = { ...options, _q: search };
     }
     if (!!time.start && !!time.end) {
       const filters = {
@@ -34,13 +42,34 @@ const List: FC = () => {
         sort: sort.map((o) => `${o.name}:${o.sort}`),
       };
     }
-    return getArticles(userInfo?.jwt!, options).then((res) => setList(res.list));
+    return getArticles(userInfo?.jwt!, options).then((res) => {
+      setList(res.list);
+      setPagination((prevState) => ({
+        ...prevState,
+        ...res.pagination,
+        visible: prevState.visible,
+        pageSize: prevState.pageSize,
+      }));
+    });
   };
 
-  useQuery(queryKeys.filterArticles({ search, time, sort }), query, {
-    // 存在令牌才可以发起查询
-    enabled: !!userInfo?.jwt,
-  });
+  useQuery(
+    queryKeys.filterArticles({
+      search,
+      time,
+      sort,
+      pagination: {
+        page: pagination.page,
+        pageSize: pagination.pageSize,
+        visible: pagination.visible,
+      },
+    }),
+    query,
+    {
+      // 存在令牌才可以发起查询
+      enabled: !!userInfo?.jwt,
+    }
+  );
 
   return (
     <>

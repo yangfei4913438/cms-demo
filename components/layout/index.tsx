@@ -5,6 +5,7 @@ import Sort from 'components/Sort';
 import TimeRange from 'components/TimeRange';
 
 import useUserInfo from 'hooks/useUserInfo';
+import Pagination from 'components/pagination';
 
 interface LayoutProps {
   children: ReactNode;
@@ -19,12 +20,11 @@ const Layout: FC<LayoutProps> = ({ children }) => {
       <section className="flex-1 flex h-full overflow-auto">
         {userInfo ? (
           <>
-            <aside className="z-1 w-52 min-w-max h-full bg-[#e0e0e0] shadow-[1px_2px_10px_1px_#050505]">
-              <div className="p-6 space-y-2">
-                <Search />
-                <TimeRange />
-                <Sort />
-              </div>
+            <aside className="p-6 space-y-3 z-1 w-52 min-w-max h-full overflow-auto bg-[#e0e0e0] shadow-[1px_2px_10px_1px_#050505]">
+              <Search />
+              <TimeRange />
+              <Sort />
+              <Pagination />
             </aside>
             <main className="flex-1 h-full">{children}</main>
           </>

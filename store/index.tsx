@@ -1,4 +1,5 @@
 import React, { createContext, useContext, useState } from 'react';
+import conf from 'conf';
 
 interface IUserInfo {
   jwt: string;
@@ -25,6 +26,14 @@ interface ISort {
   sort: 'asc' | 'desc';
 }
 
+interface IPagination {
+  visible: boolean;
+  page: number;
+  pageSize: number;
+  pageCount: number;
+  total: number;
+}
+
 interface IStoreContext {
   userInfo?: IUserInfo;
   setUserInfo: React.Dispatch<React.SetStateAction<IUserInfo | undefined>>;
@@ -36,6 +45,8 @@ interface IStoreContext {
   setTime: React.Dispatch<React.SetStateAction<ITime>>;
   sort: ISort[];
   setSort: React.Dispatch<React.SetStateAction<ISort[]>>;
+  pagination: IPagination;
+  setPagination: React.Dispatch<React.SetStateAction<IPagination>>;
 }
 
 const initData: IStoreContext = {
@@ -47,6 +58,14 @@ const initData: IStoreContext = {
   setTime: () => undefined,
   sort: [],
   setSort: () => undefined,
+  pagination: {
+    visible: conf.filters.pagination,
+    page: 1,
+    pageSize: conf.filters.pageSizeMin,
+    pageCount: 2,
+    total: conf.filters.pageSizeMax,
+  },
+  setPagination: () => undefined,
 };
 
 const StoreContext = createContext<IStoreContext>(initData);
@@ -62,6 +81,8 @@ export const AppWrapper: React.FC<{ children: React.ReactNode }> = ({ children }
   const [time, setTime] = useState<ITime>(initData.time);
   // 排序对象
   const [sort, setSort] = useState<ISort[]>(initData.sort);
+  // 分页数据
+  const [pagination, setPagination] = useState<IPagination>(initData.pagination);
 
   const state: IStoreContext = {
     userInfo,
@@ -74,6 +95,8 @@ export const AppWrapper: React.FC<{ children: React.ReactNode }> = ({ children }
     setTime,
     sort,
     setSort,
+    pagination,
+    setPagination,
   };
 
   return <StoreContext.Provider value={state}>{children}</StoreContext.Provider>;

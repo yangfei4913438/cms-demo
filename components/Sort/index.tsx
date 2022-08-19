@@ -6,7 +6,7 @@ import queryClient from 'core/queryClient';
 import { queryKeys } from 'core/queryConsts';
 
 const Sort = () => {
-  const { time, search, sort: globalSort, setSort } = useAppContext();
+  const { time, search, sort: globalSort, setSort, pagination } = useAppContext();
 
   const [visible, setVisible] = useState(conf.filters.sort);
 
@@ -27,7 +27,18 @@ const Sort = () => {
       .map((o) => ({ name: o, sort: localSort[o] }))
   ) => {
     setSort(sort);
-    await queryClient.invalidateQueries(queryKeys.filterArticles({ search, time, sort }));
+    await queryClient.invalidateQueries(
+      queryKeys.filterArticles({
+        search,
+        time,
+        sort,
+        pagination: {
+          page: pagination.page,
+          pageSize: pagination.pageSize,
+          visible: pagination.visible,
+        },
+      })
+    );
   };
 
   const handleQuery = async () => {
