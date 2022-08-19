@@ -29,29 +29,33 @@ export const getArticles = (token: string, options: object = {}) => {
     },
   })
     .then((res) => res.json())
-    .then((res) => parseData(res.data));
+    .then((res) => ({ list: parseData(res.data), pagination: res.meta.pagination }));
 };
 
 // 数据转换
-const parseData = (data: any): Articles[] => {
-  if (!data) return [];
-  return data.map((row: any) => {
-    // 标题图只有一个，所以数据结构是这样的。
-    const attributes = row.attributes.images.data.attributes;
-    return {
-      id: row.id,
-      title: row.attributes.title,
-      description: row.attributes.description,
-      image: {
-        name: attributes.name,
-        url: attributes.url,
-        width: attributes.width,
-        height: attributes.height,
-        provider: attributes.provider,
-        hash: attributes.hash,
+const parseData = (data: any[]): Articles[] => {
+  return data.map(
+    ({
+      id,
+      attributes: {
+        title,
+        description,
+        images: {
+          // 标题图只有一个，所以数据结构是这样的。
+          data: {
+            attributes: { name, url, width, height, provider, hash },
+          },
+        },
+        updatedAt,
+        createdAt,
       },
-      updatedAt: row.attributes.updatedAt,
-      createdAt: row.attributes.createdAt,
-    };
-  });
+    }) => ({
+      id,
+      title,
+      description,
+      image: { name, url, width, height, provider, hash },
+      updatedAt,
+      createdAt,
+    })
+  );
 };

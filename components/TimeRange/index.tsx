@@ -33,7 +33,7 @@ const TimeRange = () => {
   };
 
   return (
-    <div className="space-y-3">
+    <div>
       <label className="label cursor-pointer max-w-max space-x-2">
         <span className="label-text font-bold text-xl">时间范围筛选</span>
         <input

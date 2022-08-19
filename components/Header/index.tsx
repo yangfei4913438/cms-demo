@@ -29,7 +29,7 @@ const Header = () => {
   return (
     <header className="w-full bg-gray-700 flex justify-between px-4 ">
       <NextLink href="/" className="py-3 text-white">
-        <span className="text-2xl lowercase ">查询范例</span>
+        <span className="text-2xl">Strapi 查询范例</span>
       </NextLink>
       <div className="h-full flex items-center gap-2 text-white">
         {userInfo ? (

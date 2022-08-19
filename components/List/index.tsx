@@ -34,7 +34,7 @@ const List: FC = () => {
         sort: sort.map((o) => `${o.name}:${o.sort}`),
       };
     }
-    return getArticles(userInfo?.jwt!, options).then(setList);
+    return getArticles(userInfo?.jwt!, options).then((res) => setList(res.list));
   };
 
   useQuery(queryKeys.filterArticles({ search, time, sort }), query, {
