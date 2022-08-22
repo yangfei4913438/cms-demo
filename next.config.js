@@ -30,18 +30,21 @@ const securityHeaders = [
   },
 ];
 
-// 多语言配置
-const i18n = {
-  defaultLocale: 'zh-Hans', // 默认语言
-  locales: ['zh-Hans', 'en'], // 可用的语言
-  localeDetection: true, // 启用嗅探浏览器语言，加快语言检测速度
-};
-
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   reactStrictMode: true,
   swcMinify: true,
-  i18n,
+  // 多语言配置
+  // 官网文档
+  // https://nextjs.org/docs/advanced-features/i18n-routing
+  // UTS Locale Identifiers
+  // https://www.unicode.org/reports/tr35/tr35-59/tr35.html#unicode_script_subtag_validity
+  i18n: {
+    defaultLocale: 'en',
+    locales: ['en', 'zh'],
+    // 关闭浏览器语言嗅探，避免和本地的语言切换逻辑冲突（默认先走这里的嗅探，然后才会是内部逻辑，如果两边值不一致就会出现进入页面就闪屏）
+    localeDetection: false,
+  },
   headers: async () => {
     return [
       {

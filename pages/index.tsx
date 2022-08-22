@@ -3,6 +3,9 @@ import { dehydrate } from '@tanstack/react-query';
 import dayjs from 'dayjs';
 import utc from 'dayjs/plugin/utc';
 
+import { loadTranslations } from 'ni18n';
+import { ni18nConfig } from '../ni18n.config';
+
 import queryClient from 'core/queryClient';
 import PageHeader from 'components/pageHeader';
 import Layout from 'components/layout';
@@ -18,6 +21,8 @@ export const getStaticProps: GetStaticProps = async ({ locale }) => {
   return {
     props: {
       dehydratedState: dehydrate(queryClient),
+      // 写上用到的翻译文件命名空间，否则翻译内容不会在服务端渲染。(一个个的找引入组件中引用的，如果实在不想一个个找，那就全写上，不过一般是按需写上，没必要全加载进来。)
+      ...(await loadTranslations(ni18nConfig, locale, ['demo'])),
     },
   };
 };
@@ -27,7 +32,7 @@ const Home: NextPage<GetStaticProps> = () => {
     <Layout>
       <>
         <PageHeader title={'TX CMS API'} />
-        <div className="w-full h-full overflow-auto bg-[#f1f1f1]">
+        <div className="h-full w-full overflow-auto bg-[#f1f1f1]">
           <List />
         </div>
       </>

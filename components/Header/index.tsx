@@ -1,14 +1,19 @@
 import NextLink from 'components/nextLink';
 import { useState } from 'react';
 import useUserInfo from 'hooks/useUserInfo';
+import { useRouter } from 'next/router';
+import { useTranslation } from 'react-i18next';
+import storage from 'utils/localStorage';
 
 const Header = () => {
+  const router = useRouter();
+  const { t } = useTranslation();
+  const { userInfo, login, logout } = useUserInfo();
+
   const [edit, setEdit] = useState<{ username: string; password: string }>({
     username: '',
     password: '',
   });
-
-  const { userInfo, login, logout } = useUserInfo();
 
   const loginId = 'login-model';
 
@@ -26,12 +31,37 @@ const Header = () => {
     setEdit({ username: '', password: '' });
   };
 
+  const handleSwitch = async () => {
+    if (router.locale === 'zh') {
+      await router.replace(router.pathname, '', { locale: 'en', shallow: true }).then(() => {
+        // 记录当前使用的语言，页面刷新不会丢失
+        storage.setValue('lang', 'en');
+      });
+    } else {
+      await router.replace(router.pathname, '', { locale: 'zh', shallow: true }).then(() => {
+        // 记录当前使用的语言，页面刷新不会丢失
+        storage.setValue('lang', 'zh');
+      });
+    }
+  };
+
   return (
-    <header className="w-full bg-gray-700 flex justify-between px-4 ">
+    <header className="flex w-full justify-between bg-gray-700 px-4 ">
       <NextLink href="/" className="py-3 text-white">
-        <span className="text-2xl">Strapi 查询范例</span>
+        <span className="text-2xl">Strapi 查询范例 {t('home.hi')}</span>
       </NextLink>
-      <div className="h-full flex items-center gap-2 text-white">
+      <div className="flex h-full items-center gap-2 text-white">
+        <label className="label max-w-max cursor-pointer space-x-2">
+          <span className="label-text font-bold text-white">
+            {router.locale === 'zh' ? '中文' : '英文'}
+          </span>
+          <input
+            type="checkbox"
+            className="!toggle !toggle-primary checked:bg-none"
+            checked={router.locale === 'zh'}
+            onChange={handleSwitch}
+          />
+        </label>
         {userInfo ? (
           <label
             className="btn btn-ghost text-lg"
@@ -53,14 +83,14 @@ const Header = () => {
       <div className="modal">
         <div className="modal-box space-y-12">
           <div className="relative space-y-6">
-            <div className="pt-2 text-center text-gray-600 text-2xl font-bold">用户登录</div>
+            <div className="pt-2 text-center text-2xl font-bold text-gray-600">用户登录</div>
             <label className="input-group flex">
               <span>用户账号</span>
               <input
                 type="text"
                 placeholder="请输入您的用户名或邮箱"
                 value={edit.username}
-                className="flex-1 input input-md input-bordered outline-none"
+                className="input input-bordered input-md flex-1 outline-none"
                 onChange={(e) => {
                   setEdit((prev: any) => {
                     return {
@@ -77,7 +107,7 @@ const Header = () => {
                 type="password"
                 placeholder="请输入您的登录密码"
                 value={edit.password}
-                className="flex-1 input input-md input-bordered outline-none"
+                className="input input-bordered input-md flex-1 outline-none"
                 onChange={(e) => {
                   setEdit((prev: any) => {
                     return {
