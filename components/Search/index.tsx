@@ -3,8 +3,10 @@ import { useAppContext } from 'store/index';
 import queryClient from 'core/queryClient';
 import { queryKeys } from 'core/queryConsts';
 import conf from 'conf';
+import { useRouter } from 'next/router';
 
 const Search = () => {
+  const router = useRouter();
   const [visible, setVisible] = useState(conf.filters.search);
   const { setSearch, time, sort, pagination } = useAppContext();
   const [localSearch, setLocalSearch] = useState('');
@@ -21,6 +23,7 @@ const Search = () => {
           pageSize: pagination.pageSize,
           visible: pagination.visible,
         },
+        locale: router.locale,
       })
     );
   };
@@ -48,8 +51,8 @@ const Search = () => {
 
   return (
     <div>
-      <label className="label cursor-pointer max-w-max space-x-2">
-        <span className="label-text font-bold text-xl">模糊匹配</span>
+      <label className="label max-w-max cursor-pointer space-x-2">
+        <span className="label-text text-xl font-bold">模糊匹配</span>
         <input
           type="checkbox"
           className="!toggle checked:bg-none"
@@ -57,7 +60,7 @@ const Search = () => {
           onChange={handleSwitch}
         />
       </label>
-      <div className="p-4 bg-white rounded-md shadow-md">
+      <div className="rounded-md bg-white p-4 shadow-md">
         <label className="input-group">
           <input
             type="text"

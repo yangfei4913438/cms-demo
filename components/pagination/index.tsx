@@ -4,8 +4,10 @@ import conf from 'conf/index';
 import { useAppContext } from 'store';
 import queryClient from 'core/queryClient';
 import { queryKeys } from 'core/queryConsts';
+import { useRouter } from 'next/router';
 
 const Pagination = () => {
+  const router = useRouter();
   const { search, time, sort, pagination, setPagination } = useAppContext();
 
   const handleSwitch = async (e: ChangeEvent<HTMLInputElement>) => {
@@ -22,6 +24,7 @@ const Pagination = () => {
           time,
           sort,
           pagination: { page: 1, pageSize: conf.filters.pageSizeMin, visible: false },
+          locale: router.locale,
         })
       );
     } else {
@@ -52,8 +55,8 @@ const Pagination = () => {
 
   return (
     <div>
-      <label className="label cursor-pointer max-w-max space-x-2">
-        <span className="label-text font-bold text-xl">分页</span>
+      <label className="label max-w-max cursor-pointer space-x-2">
+        <span className="label-text text-xl font-bold">分页</span>
         <input
           type="checkbox"
           className="!toggle checked:bg-none"
@@ -61,14 +64,14 @@ const Pagination = () => {
           onChange={handleSwitch}
         />
       </label>
-      <div className="bg-white p-4 space-y-4 rounded-md shadow-md w-[320px]">
-        <div className="w-full input-group input-group-sm h-11">
+      <div className="w-[320px] space-y-4 rounded-md bg-white p-4 shadow-md">
+        <div className="input-group input-group-sm h-11 w-full">
           <span>每页文章数量</span>
           <select
             value={pagination.pageSize}
             disabled={!pagination.visible}
             onChange={(e) => changePageSize(Number(e.target.value))}
-            className="flex-1 select select-bordered select-sm h-11 leading-5 text-gray-500"
+            className="select select-bordered select-sm h-11 flex-1 leading-5 text-gray-500"
           >
             <option disabled>选择每页文章数量</option>
             {Array.from({ length: conf.filters.pageSizeMax }, (_, idx) =>
@@ -89,34 +92,34 @@ const Pagination = () => {
             value={pagination.page}
             onChange={(e) => changePage(Number(e.target.value))}
             placeholder="请输入页码"
-            className="input input-bordered flex-1 input-sm w-10 h-11"
+            className="input input-bordered input-sm h-11 w-10 flex-1"
           />
           <span>页</span>
         </label>
         <div className="btn-group grid grid-cols-4">
           <button
-            className={cx('btn btn-sm h-11 btn-outline')}
+            className={cx('btn btn-outline btn-sm h-11')}
             disabled={pagination.page < 2 || !pagination.visible}
             onClick={() => changePage(1)}
           >
             首页
           </button>
           <button
-            className="btn btn-sm h-11 btn-outline"
+            className="btn btn-outline btn-sm h-11"
             disabled={pagination.page < 2 || !pagination.visible}
             onClick={() => changePage(pagination.page - 1)}
           >
             上一页
           </button>
           <button
-            className="btn btn-sm h-11 btn-outline"
+            className="btn btn-outline btn-sm h-11"
             disabled={pagination.page >= pagination.pageCount || !pagination.visible}
             onClick={() => changePage(pagination.page + 1)}
           >
             下一页
           </button>
           <button
-            className="btn btn-sm h-11 btn-outline"
+            className="btn btn-outline btn-sm h-11"
             disabled={pagination.page >= pagination.pageCount || !pagination.visible}
             onClick={() => changePage(pagination.pageCount)}
           >

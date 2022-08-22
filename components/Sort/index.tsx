@@ -4,8 +4,10 @@ import conf from 'conf';
 import cx from 'classnames';
 import queryClient from 'core/queryClient';
 import { queryKeys } from 'core/queryConsts';
+import { useRouter } from 'next/router';
 
 const Sort = () => {
+  const router = useRouter();
   const { time, search, sort: globalSort, setSort, pagination } = useAppContext();
 
   const [visible, setVisible] = useState(conf.filters.sort);
@@ -37,6 +39,7 @@ const Sort = () => {
           pageSize: pagination.pageSize,
           visible: pagination.visible,
         },
+        locale: router.locale,
       })
     );
   };
@@ -87,13 +90,13 @@ const Sort = () => {
     if (idx === -1) {
       return '';
     }
-    return <span className="inline-block font-bold text-[16px]"> (No.{idx + 1}) </span>;
+    return <span className="inline-block text-[16px] font-bold"> (No.{idx + 1}) </span>;
   };
 
   return (
     <div>
-      <label className="label cursor-pointer max-w-max space-x-2">
-        <span className="label-text font-bold text-xl">排序</span>
+      <label className="label max-w-max cursor-pointer space-x-2">
+        <span className="label-text text-xl font-bold">排序</span>
         <input
           type="checkbox"
           className="!toggle checked:bg-none"
@@ -101,9 +104,9 @@ const Sort = () => {
           onChange={handleSwitch}
         />
       </label>
-      <div className="bg-white p-4 rounded-md shadow-md">
-        <div className="flex justify-between items-center">
-          <label className="label justify-start space-x-2 cursor-pointer h-9">
+      <div className="rounded-md bg-white p-4 shadow-md">
+        <div className="flex items-center justify-between">
+          <label className="label h-9 cursor-pointer justify-start space-x-2">
             <input
               type="checkbox"
               disabled={!visible}
@@ -127,8 +130,8 @@ const Sort = () => {
             </label>
           )}
         </div>
-        <div className="flex justify-between items-center">
-          <label className="label justify-start space-x-2 cursor-pointer h-9">
+        <div className="flex items-center justify-between">
+          <label className="label h-9 cursor-pointer justify-start space-x-2">
             <input
               type="checkbox"
               disabled={!visible}
@@ -152,8 +155,8 @@ const Sort = () => {
             </label>
           )}
         </div>
-        <div className="flex justify-between items-center">
-          <label className="label justify-start space-x-2 cursor-pointer h-9">
+        <div className="flex items-center justify-between">
+          <label className="label h-9 cursor-pointer justify-start space-x-2">
             <input
               type="checkbox"
               disabled={!visible}
@@ -178,7 +181,7 @@ const Sort = () => {
           )}
         </div>
         <button
-          className={cx('btn btn-sm w-32 h-10 mt-4')}
+          className={cx('btn btn-sm mt-4 h-10 w-32')}
           disabled={!visible}
           onClick={handleQuery}
         >

@@ -4,8 +4,10 @@ import { useAppContext } from 'store';
 import queryClient from 'core/queryClient';
 import { queryKeys } from 'core/queryConsts';
 import conf from 'conf';
+import { useRouter } from 'next/router';
 
 const TimeRange = () => {
+  const router = useRouter();
   const { time, setTime, search, sort, pagination } = useAppContext();
 
   const [visible, setVisible] = useState(conf.filters.timeRange);
@@ -23,6 +25,7 @@ const TimeRange = () => {
           pageSize: pagination.pageSize,
           visible: pagination.visible,
         },
+        locale: router.locale,
       })
     );
   };
@@ -45,8 +48,8 @@ const TimeRange = () => {
 
   return (
     <div>
-      <label className="label cursor-pointer max-w-max space-x-2">
-        <span className="label-text font-bold text-xl">时间范围筛选</span>
+      <label className="label max-w-max cursor-pointer space-x-2">
+        <span className="label-text text-xl font-bold">时间范围筛选</span>
         <input
           type="checkbox"
           className="!toggle checked:bg-none"
@@ -55,8 +58,8 @@ const TimeRange = () => {
         />
       </label>
 
-      <div className="bg-white p-4 rounded-md shadow-md">
-        <label className="label cursor-pointer max-w-max space-x-2">
+      <div className="rounded-md bg-white p-4 shadow-md">
+        <label className="label max-w-max cursor-pointer space-x-2">
           <span className="label-text text-lg font-bold">
             使用 {localTime.type === 'createdAt' ? '创建' : '更新'} 时间
           </span>
@@ -116,7 +119,7 @@ const TimeRange = () => {
           />
         </label>
         <button
-          className={cx('btn btn-sm w-32 h-10 mt-4')}
+          className={cx('btn btn-sm mt-4 h-10 w-32')}
           disabled={!visible}
           onClick={handleQuery}
         >

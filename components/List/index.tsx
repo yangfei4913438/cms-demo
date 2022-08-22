@@ -6,8 +6,10 @@ import { getArticles } from 'http/articles';
 import useUserInfo from 'hooks/useUserInfo';
 import { useAppContext } from 'store/index';
 import { formatTime } from 'utils/times';
+import { useRouter } from 'next/router';
 
 const List: FC = () => {
+  const router = useRouter();
   const { userInfo } = useUserInfo();
   const { list, setList, search, time, sort, pagination, setPagination } = useAppContext();
 
@@ -42,6 +44,13 @@ const List: FC = () => {
         sort: sort.map((o) => `${o.name}:${o.sort}`),
       };
     }
+    if (router.locale) {
+      options = {
+        ...options,
+        locale: [router.locale === 'zh' ? 'zh-Hans' : 'en'],
+      };
+    }
+
     return getArticles(userInfo?.jwt!, options).then((res) => {
       setList(res.list);
       setPagination((prevState) => ({
@@ -63,6 +72,7 @@ const List: FC = () => {
         pageSize: pagination.pageSize,
         visible: pagination.visible,
       },
+      locale: router.locale,
     }),
     query,
     {
@@ -74,7 +84,7 @@ const List: FC = () => {
   return (
     <>
       {list?.length === 0 && (
-        <div className="w-full h-full flex justify-center items-center text-3xl text-gray-500">
+        <div className="flex h-full w-full items-center justify-center text-3xl text-gray-500">
           🤣哎呀，没有数据显示哦～
         </div>
       )}
@@ -82,7 +92,7 @@ const List: FC = () => {
         {list?.map((row) => {
           return (
             <div
-              className="w-full flex bg-white box-border overflow-hidden rounded-md shadow-md"
+              className="box-border flex w-full overflow-hidden rounded-md bg-white shadow-md"
               style={{ height: 220 }}
               key={row.id}
             >
@@ -96,16 +106,16 @@ const List: FC = () => {
                   width: 360,
                 }}
               />
-              <div className="flex-1 flex flex-col items-start justify-start p-6">
-                <div className="h-10 text-2xl font-bold flex items-center">
-                  <span className="overflow-hidden whitespace-nowrap overflow-ellipsis">
+              <div className="flex flex-1 flex-col items-start justify-start p-6">
+                <div className="flex h-10 items-center text-2xl font-bold">
+                  <span className="overflow-hidden overflow-ellipsis whitespace-nowrap">
                     {row.title}
                   </span>
                 </div>
-                <div className="w-full flex-1 mt-2 text-gray-500">{row.description}</div>
-                <div className="w-full flex justify-between items-center">
+                <div className="mt-2 w-full flex-1 text-gray-500">{row.description}</div>
+                <div className="flex w-full items-center justify-between">
                   <div>{dayjs.utc(row.updatedAt).local().format('YYYY-MM-DD HH:mm:ss')}</div>
-                  <button className="btn btn-sm btn-outline btn-ghost rounded-none px-8 text-gray-400 border-gray-300">
+                  <button className="btn btn-outline btn-ghost btn-sm rounded-none border-gray-300 px-8 text-gray-400">
                     了解更多
                   </button>
                 </div>
