@@ -1,7 +1,7 @@
 @tailwind base;
 @layer base {
   #__next {
-    @apply text-lg leading-5 text-black bg-white;
+    @apply text-lg leading-5 text-black bg-white capitalize;
     font-size: 1rem;
     line-height: 1.75;
     text-rendering: optimizeLegibility;

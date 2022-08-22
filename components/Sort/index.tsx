@@ -5,8 +5,10 @@ import cx from 'classnames';
 import queryClient from 'core/queryClient';
 import { queryKeys } from 'core/queryConsts';
 import { useRouter } from 'next/router';
+import { useTranslation } from 'react-i18next';
 
 const Sort = () => {
+  const { t } = useTranslation();
   const router = useRouter();
   const { time, search, sort: globalSort, setSort, pagination } = useAppContext();
 
@@ -96,7 +98,7 @@ const Sort = () => {
   return (
     <div>
       <label className="label max-w-max cursor-pointer space-x-2">
-        <span className="label-text text-xl font-bold">排序</span>
+        <span className="label-text text-xl font-bold">{t('filter.sort')}</span>
         <input
           type="checkbox"
           className="!toggle checked:bg-none"
@@ -114,12 +116,14 @@ const Sort = () => {
               checked={list.includes('title')}
               onChange={(e) => handleSortCheck(e, 'title')}
             />
-            <span className="label-text text-xl">标题 {showOrder('title')}</span>
+            <span className="label-text text-xl">
+              {t('filter.sort.title')} {showOrder('title')}
+            </span>
           </label>
           {list.includes('title') && (
             <label className="label cursor-pointer space-x-2">
               <span className="label-text text-lg">
-                {localSort.title === 'asc' ? '正序' : '倒序'}
+                {localSort.title === 'asc' ? t('filter.sort.asc') : t('filter.sort.desc')}
               </span>
               <input
                 type="checkbox"
@@ -139,12 +143,14 @@ const Sort = () => {
               checked={list.includes('createdAt')}
               onChange={(e) => handleSortCheck(e, 'createdAt')}
             />
-            <span className="label-text text-xl">创建时间 {showOrder('createdAt')}</span>
+            <span className="label-text text-xl">
+              {t('filter.sort.createdAt')} {showOrder('createdAt')}
+            </span>
           </label>
           {list.includes('createdAt') && (
             <label className="label cursor-pointer space-x-2">
               <span className="label-text text-lg">
-                {localSort.createdAt === 'asc' ? '正序' : '倒序'}
+                {localSort.createdAt === 'asc' ? t('filter.sort.asc') : t('filter.sort.desc')}
               </span>
               <input
                 type="checkbox"
@@ -164,12 +170,14 @@ const Sort = () => {
               checked={list.includes('updatedAt')}
               onChange={(e) => handleSortCheck(e, 'updatedAt')}
             />
-            <span className="label-text text-xl">更新时间 {showOrder('updatedAt')}</span>
+            <span className="label-text text-xl">
+              {t('filter.sort.updatedAt')} {showOrder('updatedAt')}
+            </span>
           </label>
           {list.includes('updatedAt') && (
             <label className="label cursor-pointer space-x-2">
               <span className="label-text text-lg">
-                {localSort.updatedAt === 'asc' ? '正序' : '倒序'}
+                {localSort.updatedAt === 'asc' ? t('filter.sort.asc') : t('filter.sort.desc')}
               </span>
               <input
                 type="checkbox"
@@ -181,11 +189,11 @@ const Sort = () => {
           )}
         </div>
         <button
-          className={cx('btn btn-sm mt-4 h-10 w-32')}
+          className={cx('btn btn-sm mt-4 h-10 w-32 capitalize')}
           disabled={!visible}
           onClick={handleQuery}
         >
-          排序
+          {t('filter.sort')}
         </button>
       </div>
     </div>

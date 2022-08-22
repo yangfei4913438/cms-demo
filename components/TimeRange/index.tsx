@@ -5,8 +5,10 @@ import queryClient from 'core/queryClient';
 import { queryKeys } from 'core/queryConsts';
 import conf from 'conf';
 import { useRouter } from 'next/router';
+import { useTranslation } from 'react-i18next';
 
 const TimeRange = () => {
+  const { t } = useTranslation();
   const router = useRouter();
   const { time, setTime, search, sort, pagination } = useAppContext();
 
@@ -49,7 +51,7 @@ const TimeRange = () => {
   return (
     <div>
       <label className="label max-w-max cursor-pointer space-x-2">
-        <span className="label-text text-xl font-bold">时间范围筛选</span>
+        <span className="label-text text-xl font-bold">{t('filter.time-range')}</span>
         <input
           type="checkbox"
           className="!toggle checked:bg-none"
@@ -61,7 +63,9 @@ const TimeRange = () => {
       <div className="rounded-md bg-white p-4 shadow-md">
         <label className="label max-w-max cursor-pointer space-x-2">
           <span className="label-text text-lg font-bold">
-            使用 {localTime.type === 'createdAt' ? '创建' : '更新'} 时间
+            {t('filter.time-range.switch', {
+              type: localTime.type === 'createdAt' ? t('created') : t('updated'),
+            })}
           </span>
           <input
             type="checkbox"
@@ -81,7 +85,7 @@ const TimeRange = () => {
         </label>
 
         <label className="input-group">
-          <span>开始</span>
+          <span>{t('filter.time-range.start')}</span>
           <input
             type="datetime-local"
             step={1}
@@ -100,13 +104,12 @@ const TimeRange = () => {
           />
         </label>
         <label className="input-group mt-2">
-          <span>结束</span>
+          <span>{t('filter.time-range.end')}</span>
           <input
             type="datetime-local"
             step={1}
             value={localTime.end}
             disabled={!visible}
-            placeholder="请输入匹配关键字"
             className="input input-bordered"
             onChange={(e) => {
               setLocalTime((prevState) => {
@@ -119,11 +122,11 @@ const TimeRange = () => {
           />
         </label>
         <button
-          className={cx('btn btn-sm mt-4 h-10 w-32')}
+          className={cx('btn btn-sm mt-4 h-10 w-32 capitalize')}
           disabled={!visible}
           onClick={handleQuery}
         >
-          筛选
+          {t('filter.time-range.filter')}
         </button>
       </div>
     </div>

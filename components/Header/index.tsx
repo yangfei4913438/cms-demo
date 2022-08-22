@@ -1,4 +1,5 @@
 import NextLink from 'components/nextLink';
+import cx from 'classnames';
 import { useState } from 'react';
 import useUserInfo from 'hooks/useUserInfo';
 import { useRouter } from 'next/router';
@@ -48,12 +49,12 @@ const Header = () => {
   return (
     <header className="flex w-full justify-between bg-gray-700 px-4 ">
       <NextLink href="/" className="py-3 text-white">
-        <span className="text-2xl">Strapi 查询范例 {t('home.hi')}</span>
+        <span className="text-2xl">Strapi {t('logo')}</span>
       </NextLink>
       <div className="flex h-full items-center gap-2 text-white">
         <label className="label max-w-max cursor-pointer space-x-2">
           <span className="label-text font-bold text-white">
-            {router.locale === 'zh' ? '中文' : '英文'}
+            {router.locale === 'zh' ? '简体中文' : 'English'}
           </span>
           <input
             type="checkbox"
@@ -64,17 +65,17 @@ const Header = () => {
         </label>
         {userInfo ? (
           <label
-            className="btn btn-ghost text-lg"
+            className="btn btn-ghost text-lg capitalize"
             onClick={async (e) => {
               e.preventDefault();
               await handleLogout();
             }}
           >
-            注销
+            {t('logout')}
           </label>
         ) : (
-          <label htmlFor={loginId} className="btn btn-ghost text-lg">
-            登录
+          <label htmlFor={loginId} className="btn btn-ghost text-lg capitalize">
+            {t('login')}
           </label>
         )}
       </div>
@@ -83,12 +84,16 @@ const Header = () => {
       <div className="modal">
         <div className="modal-box space-y-12">
           <div className="relative space-y-6">
-            <div className="pt-2 text-center text-2xl font-bold text-gray-600">用户登录</div>
+            <div className="pt-2 text-center text-2xl font-bold text-gray-600">
+              {t('login.window.title')}
+            </div>
             <label className="input-group flex">
-              <span>用户账号</span>
+              <span className={cx(router.locale === 'en' && 'min-w-[145px]')}>
+                {t('login.window.username')}
+              </span>
               <input
                 type="text"
-                placeholder="请输入您的用户名或邮箱"
+                placeholder={t('login.window.username.placeholder')}
                 value={edit.username}
                 className="input input-bordered input-md flex-1 outline-none"
                 onChange={(e) => {
@@ -102,10 +107,12 @@ const Header = () => {
               />
             </label>
             <label className="input-group flex">
-              <span>登录密码</span>
+              <span className={cx(router.locale === 'en' && 'min-w-[145px]')}>
+                {t('login.window.password')}
+              </span>
               <input
                 type="password"
-                placeholder="请输入您的登录密码"
+                placeholder={t('login.window.password.placeholder')}
                 value={edit.password}
                 className="input input-bordered input-md flex-1 outline-none"
                 onChange={(e) => {
@@ -120,11 +127,11 @@ const Header = () => {
             </label>
           </div>
           <div className="modal-action space-x-4">
-            <label htmlFor={loginId} className="btn" onClick={handleLogout}>
-              取消登录
+            <label htmlFor={loginId} className="btn capitalize" onClick={handleLogout}>
+              {t('login.window.cancel')}
             </label>
-            <label htmlFor={loginId} className="btn btn-primary" onClick={handleLogin}>
-              点击登录
+            <label htmlFor={loginId} className="btn btn-primary capitalize" onClick={handleLogin}>
+              {t('login.window.submit')}
             </label>
           </div>
         </div>

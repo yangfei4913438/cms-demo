@@ -6,6 +6,7 @@ import TimeRange from 'components/TimeRange';
 
 import useUserInfo from 'hooks/useUserInfo';
 import Pagination from 'components/pagination';
+import { useTranslation } from 'react-i18next';
 
 interface LayoutProps {
   children: ReactNode;
@@ -13,24 +14,25 @@ interface LayoutProps {
 
 const Layout: FC<LayoutProps> = ({ children }) => {
   const { userInfo } = useUserInfo();
+  const { t } = useTranslation();
 
   return (
-    <main className="relative w-screen h-screen box-border overflow-hidden flex flex-col">
+    <main className="relative box-border flex h-screen w-screen flex-col overflow-hidden">
       <Header />
-      <section className="flex-1 flex h-full overflow-auto">
+      <section className="flex h-full flex-1 overflow-auto">
         {userInfo ? (
           <>
-            <aside className="p-6 space-y-3 z-1 w-52 min-w-max h-full overflow-auto bg-[#e0e0e0] shadow-[1px_2px_10px_1px_#050505]">
+            <aside className="z-1 h-full w-52 min-w-max space-y-3 overflow-auto bg-[#e0e0e0] p-6 shadow-[1px_2px_10px_1px_#050505]">
               <Search />
               <TimeRange />
               <Sort />
               <Pagination />
             </aside>
-            <main className="flex-1 h-full">{children}</main>
+            <main className="h-full flex-1">{children}</main>
           </>
         ) : (
-          <div className="w-full h-full flex justify-center items-center text-3xl text-gray-500">
-            🤣哎呀，你还没登录呢～
+          <div className="flex h-full w-full items-center justify-center text-3xl text-gray-500">
+            {t('no_login_text')}
           </div>
         )}
       </section>

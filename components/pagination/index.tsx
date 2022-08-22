@@ -5,8 +5,10 @@ import { useAppContext } from 'store';
 import queryClient from 'core/queryClient';
 import { queryKeys } from 'core/queryConsts';
 import { useRouter } from 'next/router';
+import { useTranslation } from 'react-i18next';
 
 const Pagination = () => {
+  const { t } = useTranslation();
   const router = useRouter();
   const { search, time, sort, pagination, setPagination } = useAppContext();
 
@@ -56,7 +58,7 @@ const Pagination = () => {
   return (
     <div>
       <label className="label max-w-max cursor-pointer space-x-2">
-        <span className="label-text text-xl font-bold">分页</span>
+        <span className="label-text text-xl font-bold">{t('filter.pagination')}</span>
         <input
           type="checkbox"
           className="!toggle checked:bg-none"
@@ -66,7 +68,7 @@ const Pagination = () => {
       </label>
       <div className="w-[320px] space-y-4 rounded-md bg-white p-4 shadow-md">
         <div className="input-group input-group-sm h-11 w-full">
-          <span>每页文章数量</span>
+          <span>{t('filter.pagination.page_size')}</span>
           <select
             value={pagination.pageSize}
             disabled={!pagination.visible}
@@ -84,7 +86,7 @@ const Pagination = () => {
           </select>
         </div>
         <label className="input-group input-group-sm h-11">
-          <span>当前第</span>
+          <span>{t('filter.pagination.page_start')}</span>
           <input
             type="number"
             min={1}
@@ -94,36 +96,36 @@ const Pagination = () => {
             placeholder="请输入页码"
             className="input input-bordered input-sm h-11 w-10 flex-1"
           />
-          <span>页</span>
+          {router.locale !== 'en' && <span>{t('filter.pagination.page_end', '')}</span>}
         </label>
         <div className="btn-group grid grid-cols-4">
           <button
-            className={cx('btn btn-outline btn-sm h-11')}
+            className={cx('btn btn-outline btn-sm h-11 capitalize')}
             disabled={pagination.page < 2 || !pagination.visible}
             onClick={() => changePage(1)}
           >
-            首页
+            {t('filter.pagination.home_page')}
           </button>
           <button
-            className="btn btn-outline btn-sm h-11"
+            className="btn btn-outline btn-sm h-11 capitalize"
             disabled={pagination.page < 2 || !pagination.visible}
             onClick={() => changePage(pagination.page - 1)}
           >
-            上一页
+            {t('filter.pagination.prev_page')}
           </button>
           <button
-            className="btn btn-outline btn-sm h-11"
+            className="btn btn-outline btn-sm h-11 capitalize"
             disabled={pagination.page >= pagination.pageCount || !pagination.visible}
             onClick={() => changePage(pagination.page + 1)}
           >
-            下一页
+            {t('filter.pagination.next_page')}
           </button>
           <button
-            className="btn btn-outline btn-sm h-11"
+            className="btn btn-outline btn-sm h-11 capitalize"
             disabled={pagination.page >= pagination.pageCount || !pagination.visible}
             onClick={() => changePage(pagination.pageCount)}
           >
-            尾页
+            {t('filter.pagination.last_page')}
           </button>
         </div>
       </div>

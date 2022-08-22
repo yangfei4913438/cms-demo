@@ -7,8 +7,10 @@ import useUserInfo from 'hooks/useUserInfo';
 import { useAppContext } from 'store/index';
 import { formatTime } from 'utils/times';
 import { useRouter } from 'next/router';
+import { useTranslation } from 'react-i18next';
 
 const List: FC = () => {
+  const { t } = useTranslation();
   const router = useRouter();
   const { userInfo } = useUserInfo();
   const { list, setList, search, time, sort, pagination, setPagination } = useAppContext();
@@ -85,7 +87,7 @@ const List: FC = () => {
     <>
       {list?.length === 0 && (
         <div className="flex h-full w-full items-center justify-center text-3xl text-gray-500">
-          🤣哎呀，没有数据显示哦～
+          {t('no_data_text')}
         </div>
       )}
       <div className="space-y-8 p-6">
