@@ -1,5 +1,6 @@
 import 'styles/index.scss';
 import dayjs from 'dayjs';
+import utc from 'dayjs/plugin/utc';
 import { useEffect } from 'react';
 import { useRouter } from 'next/router';
 import { appWithI18Next } from 'ni18n';
@@ -12,6 +13,9 @@ import useLanguageInit from 'hooks/useLanguageInit';
 import { ni18nConfig } from '../ni18n.config';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
+
+// 因为cms的时间都根据utc时间存储，所以解析的时候，需要按utc去解析
+dayjs.extend(utc);
 
 const MyApp = ({ Component, pageProps }: AppProps) => {
   // 背景图片懒加载，全局生效
