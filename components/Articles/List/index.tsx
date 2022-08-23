@@ -1,4 +1,4 @@
-import { type FC, useCallback, useEffect } from 'react';
+import { type FC } from 'react';
 import dayjs from 'dayjs';
 import { useQuery } from '@tanstack/react-query';
 import { queryKeys } from 'core/queryConsts';
@@ -8,6 +8,7 @@ import { useAppContext } from 'store/index';
 import { formatTime } from 'utils/times';
 import { useRouter } from 'next/router';
 import { useTranslation } from 'react-i18next';
+import conf from 'conf';
 
 const List: FC = () => {
   const { t } = useTranslation();
@@ -103,7 +104,7 @@ const List: FC = () => {
                 style={{
                   backgroundImage:
                     row.image.provider === 'local'
-                      ? `url('http://localhost:1337${row.image.url}')`
+                      ? `url('${conf.baseURL}${row.image.url}')`
                       : row.image.url,
                   width: 360,
                   minWidth: 360,

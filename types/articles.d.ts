@@ -14,6 +14,10 @@ interface Articles {
   updatedAt: string;
   createdAt: string;
 }
+// 文章详情
+interface Article extends Articles {
+  content: string;
+}
 
 // 文章的排序属性
 type ArticleSortType = 'title' | 'createdAt' | 'updatedAt';

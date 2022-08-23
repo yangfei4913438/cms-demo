@@ -19,6 +19,8 @@ const conf = {
     // 每页最大数据量
     pageSizeMax: 50,
   },
+  // base url
+  baseURL: 'http://localhost:1337',
 };
 
 export default conf;

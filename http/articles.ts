@@ -1,6 +1,11 @@
 import qs from 'qs';
+import conf from 'conf';
 
-const createOptions = (options: object = {}) => {
+const createOptions = (options: object = {}, isDetail: boolean = false) => {
+  // 需要的字段
+  const infoFields = ['title', 'description', 'updatedAt', 'createdAt'];
+  const fullFields = ['title', 'content', 'description', 'updatedAt', 'createdAt'];
+
   return qs.stringify(
     {
       populate: {
@@ -8,7 +13,7 @@ const createOptions = (options: object = {}) => {
           fields: ['name', 'width', 'height', 'hash', 'url', 'provider'],
         },
       },
-      fields: ['title', 'description', 'updatedAt', 'createdAt'],
+      fields: isDetail ? fullFields : infoFields,
       ...options,
     },
     {
@@ -21,7 +26,7 @@ const createOptions = (options: object = {}) => {
 export const getArticles = (token: string, options: object = {}) => {
   // 生成查询参数
   const argsStr = createOptions(options);
-  return fetch(`http://localhost:1337/api/articles?${argsStr}`, {
+  return fetch(`${conf.baseURL}/api/articles?${argsStr}`, {
     method: 'GET',
     headers: {
       Accept: 'application/json',
@@ -32,7 +37,52 @@ export const getArticles = (token: string, options: object = {}) => {
     .then((res) => ({ list: parseData(res.data), pagination: res.meta.pagination }));
 };
 
-// 数据转换
+// 获取文章详情
+export const getArticle = (token: string, id: string, options: object = {}) => {
+  // 生成查询参数
+  const argsStr = createOptions(options, true);
+  return fetch(`${conf.baseURL}/api/articles/${id}?${argsStr}`, {
+    method: 'GET',
+    headers: {
+      Accept: 'application/json',
+      Authorization: `Bearer ${token}`,
+    },
+  })
+    .then((res) => res.json())
+    .then((res) => parseDetail(res.data));
+};
+
+// 解析文章
+const parseDetail = (data: any): Article => {
+  const {
+    id,
+    attributes: {
+      title,
+      description,
+      content,
+      images: {
+        // 标题图只有一个，所以数据结构是这样的。
+        data: {
+          attributes: { name, url, width, height, provider, hash },
+        },
+      },
+      updatedAt,
+      createdAt,
+    },
+  } = data;
+
+  return {
+    id,
+    title,
+    content,
+    description,
+    image: { name, url, width, height, provider, hash },
+    updatedAt,
+    createdAt,
+  };
+};
+
+// 解析文章列表
 const parseData = (data: any[]): Articles[] => {
   return data.map(
     ({

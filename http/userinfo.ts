@@ -1,5 +1,7 @@
+import conf from 'conf';
+
 export const userLogin = (username: string, password: string) => {
-  return fetch('http://localhost:1337/api/auth/local', {
+  return fetch(`${conf.baseURL}/api/auth/local`, {
     method: 'POST',
     headers: {
       Accept: 'application/json',
