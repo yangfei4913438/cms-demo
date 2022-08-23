@@ -6,6 +6,8 @@ import { queryKeys } from 'core/queryConsts';
 import conf from 'conf';
 import { useRouter } from 'next/router';
 import { useTranslation } from 'react-i18next';
+import TextField from '@mui/material/TextField';
+import { DesktopDateTimePicker } from '@mui/x-date-pickers/DesktopDateTimePicker';
 
 const TimeRange = () => {
   const { t } = useTranslation();
@@ -40,7 +42,7 @@ const TimeRange = () => {
   const handleSwitch = async (e: ChangeEvent<HTMLInputElement>) => {
     if (!e.target.checked) {
       setVisible(false);
-      const initData: typeof time = { type: 'createdAt', start: '', end: '' };
+      const initData: typeof time = { type: 'createdAt', start: null, end: null };
       setLocalTime(initData);
       await handleSearch(initData);
     } else {
@@ -60,8 +62,8 @@ const TimeRange = () => {
         />
       </label>
 
-      <div className="rounded-md bg-white p-4 shadow-md">
-        <label className="label max-w-max cursor-pointer space-x-2">
+      <div className="flex flex-col space-y-4 rounded-md bg-white p-4 shadow-md">
+        <label className="label -my-2 max-w-max cursor-pointer space-x-2">
           <span className="label-text text-lg font-bold">
             {t('filter.time-range.switch', {
               type: localTime.type === 'createdAt' ? t('created') : t('updated'),
@@ -84,49 +86,53 @@ const TimeRange = () => {
           />
         </label>
 
-        <label className="input-group">
-          <span>{t('filter.time-range.start')}</span>
-          <input
-            type="datetime-local"
-            step={1}
-            value={localTime.start}
-            disabled={!visible}
-            placeholder="请输入匹配关键字"
-            className="input input-bordered"
-            onChange={(e) => {
-              setLocalTime((prevState) => {
-                return {
-                  ...prevState,
-                  start: e.target.value,
-                };
-              });
-            }}
-          />
-        </label>
-        <label className="input-group mt-2">
-          <span>{t('filter.time-range.end')}</span>
-          <input
-            type="datetime-local"
-            step={1}
-            value={localTime.end}
-            disabled={!visible}
-            className="input input-bordered"
-            onChange={(e) => {
-              setLocalTime((prevState) => {
-                return {
-                  ...prevState,
-                  end: e.target.value,
-                };
-              });
-            }}
-          />
-        </label>
+        <DesktopDateTimePicker
+          views={['year', 'month', 'day', 'hours', 'minutes', 'seconds']}
+          inputFormat="YYYY-MM-DD HH:mm:ss"
+          label={t('filter.time-range.start')}
+          minutesStep={5}
+          closeOnSelect={true}
+          ampm={false}
+          disabled={!visible}
+          value={localTime.start}
+          onChange={(date) => {
+            setLocalTime((prevState) => {
+              return {
+                ...prevState,
+                start: date,
+              };
+            });
+          }}
+          renderInput={(params) => <TextField {...params} />}
+        />
+
+        <DesktopDateTimePicker
+          views={['year', 'month', 'day', 'hours', 'minutes', 'seconds']}
+          inputFormat="YYYY-MM-DD HH:mm:ss"
+          label={t('filter.time-range.end')}
+          minutesStep={5}
+          closeOnSelect={true}
+          ampm={false}
+          disabled={!visible}
+          value={localTime.end}
+          onChange={(date) => {
+            console.log('xxxxx:', date);
+            setLocalTime((prevState) => {
+              return {
+                ...prevState,
+                end: date,
+              };
+            });
+          }}
+          renderInput={(params) => <TextField {...params} />}
+        />
+
         <button
-          className={cx('btn btn-sm mt-4 h-10 w-32 capitalize')}
+          className={cx('btn btn-sm h-10 w-32 capitalize')}
           disabled={!visible}
           onClick={handleQuery}
         >
-          {t('filter.time-range.filter')}
+          {t('filter.button')}
         </button>
       </div>
     </div>

@@ -10,6 +10,8 @@ import queryClient from 'core/queryClient';
 import { AppWrapper } from 'store';
 import useLanguageInit from 'hooks/useLanguageInit';
 import { ni18nConfig } from '../ni18n.config';
+import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 
 const MyApp = ({ Component, pageProps }: AppProps) => {
   // 背景图片懒加载，全局生效
@@ -29,13 +31,15 @@ const MyApp = ({ Component, pageProps }: AppProps) => {
   }, [router.locale]);
 
   return (
-    <AppWrapper>
-      <QueryClientProvider client={queryClient}>
-        <Hydrate state={pageProps.dehydratedState}>
-          <Component {...pageProps} />
-        </Hydrate>
-      </QueryClientProvider>
-    </AppWrapper>
+    <LocalizationProvider dateAdapter={AdapterDayjs}>
+      <AppWrapper>
+        <QueryClientProvider client={queryClient}>
+          <Hydrate state={pageProps.dehydratedState}>
+            <Component {...pageProps} />
+          </Hydrate>
+        </QueryClientProvider>
+      </AppWrapper>
+    </LocalizationProvider>
   );
 };
 

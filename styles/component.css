@@ -78,3 +78,8 @@
     opacity: 1;
   }
 }
+
+/* mui 日期选择器样式修复 */
+input[type='tel'] {
+  box-shadow: none !important;
+}

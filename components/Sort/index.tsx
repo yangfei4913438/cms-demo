@@ -193,7 +193,7 @@ const Sort = () => {
           disabled={!visible}
           onClick={handleQuery}
         >
-          {t('filter.sort')}
+          {t('filter.button')}
         </button>
       </div>
     </div>

@@ -17,8 +17,8 @@ interface IUserInfo {
 
 interface ITime {
   type: 'createdAt' | 'updatedAt';
-  start: string;
-  end: string;
+  start: string | null;
+  end: string | null;
 }
 
 interface ISort {
@@ -54,7 +54,7 @@ const initData: IStoreContext = {
   setList: () => undefined,
   search: '',
   setSearch: () => undefined,
-  time: { type: 'createdAt', start: '', end: '' },
+  time: { type: 'createdAt', start: null, end: null },
   setTime: () => undefined,
   sort: [],
   setSort: () => undefined,

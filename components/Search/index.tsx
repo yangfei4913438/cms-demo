@@ -74,7 +74,7 @@ const Search = () => {
             onKeyDown={handleKeyDown}
           />
           <button className="btn capitalize" disabled={!visible} onClick={() => handleSearch()}>
-            {t('filter.search.button')}
+            {t('filter.button')}
           </button>
         </label>
       </div>
