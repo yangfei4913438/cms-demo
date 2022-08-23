@@ -28,7 +28,9 @@ const Layout: FC<LayoutProps> = ({ children }) => {
               <Sort />
               <Pagination />
             </aside>
-            <main className="h-full flex-1">{children}</main>
+            <main className="h-full" style={{ width: 'calc(100% - 13rem - 10rem)' }}>
+              {children}
+            </main>
           </>
         ) : (
           <div className="flex h-full w-full items-center justify-center text-3xl text-gray-500">

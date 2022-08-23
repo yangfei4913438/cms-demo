@@ -106,10 +106,14 @@ const List: FC = () => {
                       ? `url('http://localhost:1337${row.image.url}')`
                       : row.image.url,
                   width: 360,
+                  minWidth: 360,
                 }}
               />
-              <div className="flex flex-1 flex-col items-start justify-start p-6">
-                <div className="flex h-10 items-center text-2xl font-bold">
+              <div
+                className="flex flex-1 flex-col items-start justify-start p-6"
+                style={{ width: 'calc(100% - 360px)' }}
+              >
+                <div className="flex h-10 w-full items-center text-2xl font-bold">
                   <span className="overflow-hidden overflow-ellipsis whitespace-nowrap">
                     {row.title}
                   </span>
