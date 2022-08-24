@@ -1,4 +1,7 @@
 .markdown-area {
+  // 修复最后一个节点的样式异常
+  padding-bottom: 1px;
+
   code[class*='language-'], pre[class*='language-'] {
     color: #f8f8f2;
     background: 0 0;

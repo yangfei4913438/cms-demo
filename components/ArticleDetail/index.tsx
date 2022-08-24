@@ -97,8 +97,8 @@ const ArticleDetail: FC<IArticleDetail> = ({ id }) => {
   }, [article, article?.locales, router.locale]);
 
   return (
-    <div className="flex h-full w-full justify-center overflow-auto">
-      <div className="prose h-full max-w-none p-8">
+    <div className="flex w-full flex-1 justify-center overflow-auto p-8">
+      <div className="prose prose-lg max-w-none">
         {detail && (
           <div className="space-y-2">
             <h2 className="!my-0 text-3xl font-bold dark:text-white">{detail.title}</h2>

@@ -1,5 +1,5 @@
 import dayjs from 'dayjs';
-import Link from 'components/nextLink';
+import Link from 'components/ui/nextLink';
 import { useQuery } from '@tanstack/react-query';
 import { queryKeys } from 'core/queryConsts';
 import { getArticles } from 'http/articles';

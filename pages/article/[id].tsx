@@ -42,7 +42,7 @@ const Article: NextPage<{ id: string }> = ({ id }) => {
 
   return (
     <>
-      <PageHeader title={'Article Detail'} />
+      <PageHeader title="Article Detail" />
       <Layout>
         <ArticleDetail id={(router.query?.id as string) ?? id} />
       </Layout>

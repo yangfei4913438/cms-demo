@@ -1,4 +1,4 @@
-import NextLink from 'components/nextLink';
+import NextLink from 'components/ui/nextLink';
 import cx from 'classnames';
 import { useState } from 'react';
 import useUserInfo from 'hooks/useUserInfo';
