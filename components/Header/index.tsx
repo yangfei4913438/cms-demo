@@ -34,15 +34,19 @@ const Header = () => {
 
   const handleSwitch = async () => {
     if (router.locale === 'zh') {
-      await router.replace(router.pathname, '', { locale: 'en', shallow: true }).then(() => {
-        // 记录当前使用的语言，页面刷新不会丢失
-        storage.setValue('lang', 'en');
-      });
+      await router
+        .replace(router.pathname, router.asPath, { locale: 'en', shallow: true })
+        .then(() => {
+          // 记录当前使用的语言，页面刷新不会丢失
+          storage.setValue('lang', 'en');
+        });
     } else {
-      await router.replace(router.pathname, '', { locale: 'zh', shallow: true }).then(() => {
-        // 记录当前使用的语言，页面刷新不会丢失
-        storage.setValue('lang', 'zh');
-      });
+      await router
+        .replace(router.pathname, router.asPath, { locale: 'zh', shallow: true })
+        .then(() => {
+          // 记录当前使用的语言，页面刷新不会丢失
+          storage.setValue('lang', 'zh');
+        });
     }
   };
 

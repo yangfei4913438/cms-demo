@@ -6,13 +6,17 @@ const createOptions = (options: object = {}, isDetail: boolean = false) => {
   const infoFields = ['title', 'description', 'updatedAt', 'createdAt'];
   const fullFields = ['title', 'content', 'description', 'updatedAt', 'createdAt'];
 
+  const populate = {
+    images: {
+      fields: ['name', 'width', 'height', 'hash', 'url', 'provider'],
+    },
+  };
+
   return qs.stringify(
     {
-      populate: {
-        images: {
-          fields: ['name', 'width', 'height', 'hash', 'url', 'provider'],
-        },
-      },
+      populate: isDetail
+        ? { ...populate, localizations: { data: { fields: fullFields } } }
+        : populate,
       fields: isDetail ? fullFields : infoFields,
       ...options,
     },
@@ -53,7 +57,7 @@ export const getArticle = (token: string, id: string, options: object = {}) => {
 };
 
 // 解析文章
-const parseDetail = (data: any): Article => {
+const parseDetail = (detail: any): Article => {
   const {
     id,
     attributes: {
@@ -66,10 +70,28 @@ const parseDetail = (data: any): Article => {
           attributes: { name, url, width, height, provider, hash },
         },
       },
+      localizations: { data },
       updatedAt,
       createdAt,
     },
-  } = data;
+  } = detail;
+
+  const locales: OtherArticle[] = data.map((row: any) => {
+    const {
+      id,
+      attributes: { title, content, description, updatedAt, createdAt, locale },
+    } = row;
+
+    return {
+      id,
+      title,
+      content,
+      description,
+      updatedAt,
+      createdAt,
+      locale,
+    };
+  });
 
   return {
     id,
@@ -77,6 +99,7 @@ const parseDetail = (data: any): Article => {
     content,
     description,
     image: { name, url, width, height, provider, hash },
+    locales,
     updatedAt,
     createdAt,
   };

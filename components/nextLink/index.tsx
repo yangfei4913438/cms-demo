@@ -1,17 +1,13 @@
 import React, { FC } from 'react';
-import Link from 'next/link';
+import Link, { type LinkProps } from 'next/link';
 
-interface NextLinkProps {
-  // 超链接
-  href: string;
+interface NextLinkProps extends LinkProps {
   // 自定义类名
   className?: string;
   // 是否当前页打开，默认当前页面打开
   self?: boolean;
   // title属性(seo权重1份)
   title?: string;
-  // 点击事件
-  onClick?: () => void;
   children?: React.ReactNode;
 }
 

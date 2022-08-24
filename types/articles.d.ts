@@ -14,9 +14,21 @@ interface Articles {
   updatedAt: string;
   createdAt: string;
 }
+
+interface OtherArticle {
+  id: number;
+  title: string;
+  description: string;
+  content: string;
+  locale: string;
+  updatedAt: string;
+  createdAt: string;
+}
+
 // 文章详情
 interface Article extends Articles {
   content: string;
+  locales: OtherArticle[];
 }
 
 // 文章的排序属性

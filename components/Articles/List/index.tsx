@@ -1,4 +1,5 @@
 import dayjs from 'dayjs';
+import Link from 'components/nextLink';
 import { useQuery } from '@tanstack/react-query';
 import { queryKeys } from 'core/queryConsts';
 import { getArticles } from 'http/articles';
@@ -121,9 +122,13 @@ const List = () => {
                 <div className="mt-2 w-full flex-1 text-gray-500">{row.description}</div>
                 <div className="flex w-full items-center justify-between">
                   <div>{dayjs.utc(row.updatedAt).local().format('YYYY-MM-DD HH:mm:ss')}</div>
-                  <button className="btn btn-outline btn-ghost btn-sm rounded-none border-gray-300 px-8 text-gray-400">
+                  <Link
+                    href={{ pathname: '/article/[id]', query: { id: row.id } }}
+                    self={false}
+                    className="btn btn-outline btn-ghost btn-sm rounded-none border-gray-300 px-8 text-gray-400"
+                  >
                     了解更多
-                  </button>
+                  </Link>
                 </div>
               </div>
             </div>

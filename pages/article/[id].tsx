@@ -65,7 +65,7 @@ const Article: NextPage<{ id: string }> = ({ id }) => {
     query,
     {
       // 存在令牌才可以发起查询
-      enabled: !!userInfo?.jwt && !!id,
+      enabled: !!userInfo?.jwt && !!id && router.isReady,
     }
   );
 

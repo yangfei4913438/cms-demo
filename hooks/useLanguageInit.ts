@@ -9,7 +9,7 @@ const useLanguageInit = () => {
     const locale = storage.getValue('lang');
     // 如果存在语言，就应用存储的语言
     if (locale) {
-      router.replace(router.pathname, '', { locale: locale, scroll: false });
+      router.replace(router.pathname, router.asPath, { locale: locale, scroll: false });
     }
   }, []);
 };
