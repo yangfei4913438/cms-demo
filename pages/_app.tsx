@@ -1,4 +1,5 @@
 import 'styles/index.scss';
+import 'styles/markdown-code.scss';
 import dayjs from 'dayjs';
 import utc from 'dayjs/plugin/utc';
 import { useEffect } from 'react';
