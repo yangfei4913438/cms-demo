@@ -49,9 +49,9 @@
   }
 
   .x-image {
-    @apply relative w-full max-w-lg mx-auto lg:mx-0 lg:max-w-none;
+    @apply relative mx-auto w-full max-w-lg lg:mx-0 lg:max-w-none;
     figure {
-      @apply bg-no-repeat bg-cover mt-0 mb-0;
+      @apply mt-0 mb-0 bg-cover bg-no-repeat;
     }
     &[data-src='listen'] {
       aspect-ratio: 896 / 850;
@@ -69,13 +69,12 @@
         }
       }
     }
-
   }
 
   .home-carousel {
-    @apply absolute flex items-center w-full h-full;
+    @apply absolute flex h-full w-full items-center;
   }
   .home-carousel .x-image {
-    @apply flex-shrink-0 w-full;
+    @apply w-full flex-shrink-0;
   }
 }

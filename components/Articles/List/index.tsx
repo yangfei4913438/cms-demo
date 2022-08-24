@@ -87,9 +87,7 @@ const List = () => {
   return (
     <>
       {list?.length === 0 && (
-        <div className="flex h-full w-full items-center justify-center text-3xl text-gray-500">
-          {t('no_data_text')}
-        </div>
+        <div className="flex h-full w-full items-center justify-center text-3xl text-gray-500">{t('no_data_text')}</div>
       )}
       <div className="space-y-8 p-6">
         {list?.map((row) => {
@@ -103,9 +101,7 @@ const List = () => {
                 className="bg-cover bg-center"
                 style={{
                   backgroundImage:
-                    row.image.provider === 'local'
-                      ? `url('${conf.baseURL}${row.image.url}')`
-                      : row.image.url,
+                    row.image.provider === 'local' ? `url('${conf.baseURL}${row.image.url}')` : row.image.url,
                   width: 360,
                   minWidth: 360,
                 }}
@@ -115,9 +111,7 @@ const List = () => {
                 style={{ width: 'calc(100% - 360px)' }}
               >
                 <div className="flex h-10 w-full items-center text-2xl font-bold">
-                  <span className="overflow-hidden overflow-ellipsis whitespace-nowrap">
-                    {row.title}
-                  </span>
+                  <span className="overflow-hidden overflow-ellipsis whitespace-nowrap">{row.title}</span>
                 </div>
                 <div className="mt-2 w-full flex-1 text-gray-500">{row.description}</div>
                 <div className="flex w-full items-center justify-between">

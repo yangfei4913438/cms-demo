@@ -17,13 +17,7 @@ export const getStaticPaths = async ({ locales }: { locales: string[] }) => {
   };
 };
 
-export const getStaticProps = async ({
-  locale,
-  params,
-}: {
-  locale: string;
-  params: { id: string };
-}) => {
+export const getStaticProps = async ({ locale, params }: { locale: string; params: { id: string } }) => {
   // 获取操作(因为没有权限，所以不能预先在服务端获取数据)
   // await queryClient.prefetchQuery(queryKeys.articles, () => getArticles('token'));
 

@@ -10,7 +10,5 @@ type Data = {
 };
 
 export default function handler(req: NextApiRequest, res: NextApiResponse<Data>) {
-  res
-    .status(200)
-    .json({ name: 'John Doe', url: req.url, method: req.method, query: req.query, body: req.body });
+  res.status(200).json({ name: 'John Doe', url: req.url, method: req.method, query: req.query, body: req.body });
 }

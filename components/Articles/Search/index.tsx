@@ -55,12 +55,7 @@ const Search = () => {
     <div>
       <label className="label max-w-max cursor-pointer space-x-2">
         <span className="label-text text-xl font-bold">{t('filter.search')}</span>
-        <input
-          type="checkbox"
-          className="!toggle checked:bg-none"
-          checked={visible}
-          onChange={handleSwitch}
-        />
+        <input type="checkbox" className="!toggle checked:bg-none" checked={visible} onChange={handleSwitch} />
       </label>
       <div className="rounded-md bg-white p-4 shadow-md">
         <label className="input-group">

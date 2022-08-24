@@ -1,7 +1,7 @@
 @tailwind base;
 @layer base {
   #__next {
-    @apply text-lg leading-5 text-black bg-white;
+    @apply bg-white text-lg leading-5 text-black;
     font-size: 1rem;
     line-height: 1.75;
     text-rendering: optimizeLegibility;
@@ -26,9 +26,8 @@ html {
   /* Font Family */
   --font-zh-cn: 'PingFang SC', 'Helvetica Neue', 'Helvetica', 'STHeitiSC-Light', 'Arial', sans-serif;
   --font-zh-tw: 'MHei', 'Helvetica Neue', 'Helvetica', 'Arial', 'Verdana', sans-serif;
-  --font-ja-jp: 'Apple TP', 'Helvetica Neue', 'Helvetica', 'Hiragino Kaku Gothic Pro',
-  'ヒラギノ角ゴ Pro W3', 'メイリオ', 'Meiryo', 'ＭＳ Ｐゴシック', 'Arial', 'Verdana', sans-serif;
+  --font-ja-jp: 'Apple TP', 'Helvetica Neue', 'Helvetica', 'Hiragino Kaku Gothic Pro', 'ヒラギノ角ゴ Pro W3', 'メイリオ',
+    'Meiryo', 'ＭＳ Ｐゴシック', 'Arial', 'Verdana', sans-serif;
   --font-en-us: 'Myriad Set Pro', 'Helvetica Neue', 'Helvetica', 'Arial', sans-serif;
-  --font-monospace: SFMono-Regular, Menlo, Monaco, Consolas, 'Liberation Mono', 'Courier New',
-  monospace;
+  --font-monospace: SFMono-Regular, Menlo, Monaco, Consolas, 'Liberation Mono', 'Courier New', monospace;
 }

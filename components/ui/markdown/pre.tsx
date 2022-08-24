@@ -24,9 +24,7 @@ const Pre: FC<IProps> = ({ className, children }) => {
     <div className={`${className} group relative`}>
       <div
         className="absolute right-1 top-1 hidden cursor-pointer group-hover:block"
-        onClick={(event) =>
-          copyText(dom.innerText, t('copy', { result: t('successfully') }), event)
-        }
+        onClick={(event) => copyText(dom.innerText, t('copy', { result: t('successfully') }), event)}
       >
         <button type="button" title={t('copy')} className="pt-1">
           <svg

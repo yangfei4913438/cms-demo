@@ -22,13 +22,10 @@ const Sort = () => {
     updatedAt: 'asc',
   };
 
-  const [localSort, setLocalSort] =
-    useState<{ [key in ArticleSortType]: 'asc' | 'desc' }>(initSort);
+  const [localSort, setLocalSort] = useState<{ [key in ArticleSortType]: 'asc' | 'desc' }>(initSort);
 
   const handleSearch = async (
-    sort: typeof globalSort = list
-      .filter((o) => localSort[o])
-      .map((o) => ({ name: o, sort: localSort[o] }))
+    sort: typeof globalSort = list.filter((o) => localSort[o]).map((o) => ({ name: o, sort: localSort[o] }))
   ) => {
     setSort(sort);
     await queryClient.invalidateQueries(
@@ -99,12 +96,7 @@ const Sort = () => {
     <div>
       <label className="label max-w-max cursor-pointer space-x-2">
         <span className="label-text text-xl font-bold">{t('filter.sort')}</span>
-        <input
-          type="checkbox"
-          className="!toggle checked:bg-none"
-          checked={visible}
-          onChange={handleSwitch}
-        />
+        <input type="checkbox" className="!toggle checked:bg-none" checked={visible} onChange={handleSwitch} />
       </label>
       <div className="rounded-md bg-white p-4 shadow-md">
         <div className="flex items-center justify-between">
@@ -188,11 +180,7 @@ const Sort = () => {
             </label>
           )}
         </div>
-        <button
-          className={cx('btn btn-sm mt-4 h-10 w-32 capitalize')}
-          disabled={!visible}
-          onClick={handleQuery}
-        >
+        <button className={cx('btn btn-sm mt-4 h-10 w-32 capitalize')} disabled={!visible} onClick={handleQuery}>
           {t('filter.button')}
         </button>
       </div>

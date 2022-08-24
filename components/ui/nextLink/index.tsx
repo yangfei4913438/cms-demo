@@ -12,14 +12,7 @@ interface NextLinkProps extends LinkProps {
 }
 
 // 封装一下next提供的link组件，支持生产模式下的SEO
-const NextLink: FC<NextLinkProps> = ({
-  href,
-  className,
-  onClick,
-  self = true,
-  title = '',
-  children,
-}) => {
+const NextLink: FC<NextLinkProps> = ({ href, className, onClick, self = true, title = '', children }) => {
   return (
     <Link href={href} passHref>
       <a className={className} onClick={onClick} title={title} target={self ? '_self' : '_blank'}>

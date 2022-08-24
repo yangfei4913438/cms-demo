@@ -54,12 +54,7 @@ const TimeRange = () => {
     <div>
       <label className="label max-w-max cursor-pointer space-x-2">
         <span className="label-text text-xl font-bold">{t('filter.time-range')}</span>
-        <input
-          type="checkbox"
-          className="!toggle checked:bg-none"
-          checked={visible}
-          onChange={handleSwitch}
-        />
+        <input type="checkbox" className="!toggle checked:bg-none" checked={visible} onChange={handleSwitch} />
       </label>
 
       <div className="flex flex-col space-y-4 rounded-md bg-white p-4 shadow-md">
@@ -127,11 +122,7 @@ const TimeRange = () => {
           renderInput={(params) => <TextField {...params} />}
         />
 
-        <button
-          className={cx('btn btn-sm h-10 w-32 capitalize')}
-          disabled={!visible}
-          onClick={handleQuery}
-        >
+        <button className={cx('btn btn-sm h-10 w-32 capitalize')} disabled={!visible} onClick={handleQuery}>
           {t('filter.button')}
         </button>
       </div>

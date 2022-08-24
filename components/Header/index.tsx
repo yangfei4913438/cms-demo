@@ -34,19 +34,15 @@ const Header = () => {
 
   const handleSwitch = async () => {
     if (router.locale === 'zh') {
-      await router
-        .replace(router.pathname, router.asPath, { locale: 'en', shallow: true })
-        .then(() => {
-          // 记录当前使用的语言，页面刷新不会丢失
-          storage.setValue('lang', 'en');
-        });
+      await router.replace(router.pathname, router.asPath, { locale: 'en', shallow: true }).then(() => {
+        // 记录当前使用的语言，页面刷新不会丢失
+        storage.setValue('lang', 'en');
+      });
     } else {
-      await router
-        .replace(router.pathname, router.asPath, { locale: 'zh', shallow: true })
-        .then(() => {
-          // 记录当前使用的语言，页面刷新不会丢失
-          storage.setValue('lang', 'zh');
-        });
+      await router.replace(router.pathname, router.asPath, { locale: 'zh', shallow: true }).then(() => {
+        // 记录当前使用的语言，页面刷新不会丢失
+        storage.setValue('lang', 'zh');
+      });
     }
   };
 
@@ -57,9 +53,7 @@ const Header = () => {
       </NextLink>
       <div className="flex h-full items-center gap-2 text-white">
         <label className="label max-w-max cursor-pointer space-x-2">
-          <span className="label-text font-bold text-white">
-            {router.locale === 'zh' ? '简体中文' : 'English'}
-          </span>
+          <span className="label-text font-bold text-white">{router.locale === 'zh' ? '简体中文' : 'English'}</span>
           <input
             type="checkbox"
             className="!toggle !toggle-primary checked:bg-none"
@@ -88,13 +82,9 @@ const Header = () => {
       <div className="modal">
         <div className="modal-box space-y-12">
           <div className="relative space-y-6">
-            <div className="pt-2 text-center text-2xl font-bold text-gray-600">
-              {t('login.window.title')}
-            </div>
+            <div className="pt-2 text-center text-2xl font-bold text-gray-600">{t('login.window.title')}</div>
             <label className="input-group flex">
-              <span className={cx(router.locale === 'en' && 'min-w-[145px]')}>
-                {t('login.window.username')}
-              </span>
+              <span className={cx(router.locale === 'en' && 'min-w-[145px]')}>{t('login.window.username')}</span>
               <input
                 type="text"
                 placeholder={t('login.window.username.placeholder')}
@@ -111,9 +101,7 @@ const Header = () => {
               />
             </label>
             <label className="input-group flex">
-              <span className={cx(router.locale === 'en' && 'min-w-[145px]')}>
-                {t('login.window.password')}
-              </span>
+              <span className={cx(router.locale === 'en' && 'min-w-[145px]')}>{t('login.window.password')}</span>
               <input
                 type="password"
                 placeholder={t('login.window.password.placeholder')}

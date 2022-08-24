@@ -15,7 +15,7 @@ const useBackgroundImageLazy = () => {
           }
         });
       });
-      lazyLoadImages.forEach(image => imageObserver.observe(image));
+      lazyLoadImages.forEach((image) => imageObserver.observe(image));
     } else {
       let lazyLoadThrottleTimeout: NodeJS.Timeout;
       lazyLoadImages = document.querySelectorAll('.lazy');

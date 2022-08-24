@@ -32,14 +32,10 @@ const components = {
   pre: (props: { className: string; children: DOMElement<any, any> }) => {
     return <MDPre className={props.className}>{props.children}</MDPre>;
   },
-  Video: (
-    props: React.DetailedHTMLProps<React.VideoHTMLAttributes<HTMLVideoElement>, HTMLVideoElement>
-  ) => {
+  Video: (props: React.DetailedHTMLProps<React.VideoHTMLAttributes<HTMLVideoElement>, HTMLVideoElement>) => {
     return <MDVideo {...props} />;
   },
-  Image: (
-    props: React.DetailedHTMLProps<React.ImgHTMLAttributes<HTMLImageElement>, HTMLImageElement>
-  ) => {
+  Image: (props: React.DetailedHTMLProps<React.ImgHTMLAttributes<HTMLImageElement>, HTMLImageElement>) => {
     return <MDImage {...props} />;
   },
 };

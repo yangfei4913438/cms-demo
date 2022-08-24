@@ -14,9 +14,7 @@ const createOptions = (options: object = {}, isDetail: boolean = false) => {
 
   return qs.stringify(
     {
-      populate: isDetail
-        ? { ...populate, localizations: { data: { fields: fullFields } } }
-        : populate,
+      populate: isDetail ? { ...populate, localizations: { data: { fields: fullFields } } } : populate,
       fields: isDetail ? fullFields : infoFields,
       ...options,
     },

@@ -83,12 +83,7 @@ function setValue(key: string, val: any, encrypt: boolean = false, salt: number 
 }
 
 // 会话存储
-function setValueSession(
-  key: string,
-  val: any,
-  encrypt: boolean = false,
-  salt: number = defaultSalt
-) {
+function setValueSession(key: string, val: any, encrypt: boolean = false, salt: number = defaultSalt) {
   // 保存数据前，先将数据用JSON进行序列化
   let value = JSON.stringify(val);
 

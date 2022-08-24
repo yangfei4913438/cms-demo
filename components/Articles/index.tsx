@@ -13,10 +13,7 @@ const Articles = () => {
         <Sort />
         <Pagination />
       </aside>
-      <main
-        className="h-full overflow-auto bg-[#f1f1f1]"
-        style={{ width: 'calc(100% - 13rem - 10rem)' }}
-      >
+      <main className="h-full overflow-auto bg-[#f1f1f1]" style={{ width: 'calc(100% - 13rem - 10rem)' }}>
         <List />
       </main>
     </section>

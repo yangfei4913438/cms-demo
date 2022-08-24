@@ -3,50 +3,50 @@
 @tailwind base;
 @layer base {
   .x-input {
-    @apply h-10 px-2 text-base leading-5 text-left rounded md:px-4 md:h-12;
-    @apply w-full appearance-none bg-none focus:ring hover:border-gray-5;
-    @apply transition border outline-none placeholder-gray-4;
+    @apply h-10 rounded px-2 text-left text-base leading-5 md:h-12 md:px-4;
+    @apply hover:border-gray-5 w-full appearance-none bg-none focus:ring;
+    @apply placeholder-gray-4 border outline-none transition;
   }
 
   .x-button {
-    @apply relative inline-flex items-center text-base font-medium rounded outline-none focus:ring w-max;
+    @apply relative inline-flex w-max items-center rounded text-base font-medium outline-none focus:ring;
   }
 
   .x-button-icon {
-    @apply justify-center w-10 h-10 leading-10;
+    @apply h-10 w-10 justify-center leading-10;
   }
   .x-button-md {
     @apply h-10 px-4 leading-10;
   }
   .x-button-xl {
-    @apply h-12 px-8 leading-12;
+    @apply leading-12 h-12 px-8;
   }
 
   .x-button-text {
-    @apply text-current hover:bg-black-opacity-1;
+    @apply hover:bg-black-opacity-1 text-current;
   }
   .dark .x-button-text {
-    @apply text-current hover:bg-white-opacity-2;
+    @apply hover:bg-white-opacity-2 text-current;
   }
   .x-button-primary {
-    @apply text-white bg-primary hover:bg-primary-dark;
+    @apply hover:bg-primary-dark bg-primary text-white;
   }
   .x-button-warning {
-    @apply text-black bg-warning hover:bg-warning-bright focus:ring-warning-opacity-5;
+    @apply hover:bg-warning-bright focus:ring-warning-opacity-5 bg-warning text-black;
   }
   .x-button-ghost {
-    @apply text-white bg-white-opacity-3 hover:bg-white-opacity-4 focus:ring-white-opacity-5;
+    @apply bg-white-opacity-3 hover:bg-white-opacity-4 focus:ring-white-opacity-5 text-white;
   }
 
   .x-grid {
-    @apply grid items-center w-5/6 max-w-6xl grid-cols-1 mx-auto lg:grid-cols-10 gap-y-16 lg:gap-x-16 lg:gap-y-32;
+    @apply mx-auto grid w-5/6 max-w-6xl grid-cols-1 items-center gap-y-16 lg:grid-cols-10 lg:gap-x-16 lg:gap-y-32;
   }
 
   .x-col-contents {
-    @apply max-w-lg mx-auto prose prose-lg text-center lg:max-w-none lg:text-left;
+    @apply prose prose-lg mx-auto max-w-lg text-center lg:max-w-none lg:text-left;
   }
   .x-row-contents {
-    @apply max-w-lg mx-auto prose prose-lg text-center lg:max-w-none lg:col-span-6 lg:col-start-3;
+    @apply prose prose-lg mx-auto max-w-lg text-center lg:col-span-6 lg:col-start-3 lg:max-w-none;
   }
 
   .x-py {
