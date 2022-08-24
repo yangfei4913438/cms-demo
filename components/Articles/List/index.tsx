@@ -1,4 +1,3 @@
-import { type FC } from 'react';
 import dayjs from 'dayjs';
 import { useQuery } from '@tanstack/react-query';
 import { queryKeys } from 'core/queryConsts';
@@ -10,7 +9,7 @@ import { useRouter } from 'next/router';
 import { useTranslation } from 'react-i18next';
 import conf from 'conf';
 
-const List: FC = () => {
+const List = () => {
   const { t } = useTranslation();
   const router = useRouter();
   const { userInfo } = useUserInfo();

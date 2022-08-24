@@ -1,4 +1,4 @@
-import type { GetStaticProps, NextPage } from 'next';
+import type { NextPage } from 'next';
 import { dehydrate, useQuery } from '@tanstack/react-query';
 import queryClient from 'core/queryClient';
 import { loadTranslations } from 'ni18n';
@@ -12,24 +12,31 @@ import { useRouter } from 'next/router';
 import useUserInfo from 'hooks/useUserInfo';
 import { useAppContext } from 'store/index';
 
-export const getStaticProps: GetStaticProps = async ({ locale, params }) => {
+export const getStaticPaths = async ({ locales }: { locales: string[] }) => {
+  const paths = locales?.map((locale) => ({ params: { id: 'null' }, locale }));
+  return {
+    paths,
+    fallback: true,
+  };
+};
+
+export const getStaticProps = async ({
+  locale,
+  params,
+}: {
+  locale: string;
+  params: { id: string };
+}) => {
   // 获取操作(因为没有权限，所以不能预先在服务端获取数据)
   // await queryClient.prefetchQuery(queryKeys.articles, () => getArticles('token'));
 
   return {
     props: {
-      id: params?.id,
       dehydratedState: dehydrate(queryClient),
       // 写上用到的翻译文件命名空间，否则翻译内容不会在服务端渲染。(一个个的找引入组件中引用的，如果实在不想一个个找，那就全写上，不过一般是按需写上，没必要全加载进来。)
       ...(await loadTranslations(ni18nConfig, locale, ['home'])),
+      id: params.id,
     },
-  };
-};
-
-export const getStaticPaths = async ({ params }: { params: { id: string } }) => {
-  return {
-    paths: [{ params: { id: params?.id ?? '1' } }],
-    fallback: true,
   };
 };
 
@@ -58,7 +65,7 @@ const Article: NextPage<{ id: string }> = ({ id }) => {
     query,
     {
       // 存在令牌才可以发起查询
-      enabled: !!userInfo?.jwt,
+      enabled: !!userInfo?.jwt && !!id,
     }
   );
 
