@@ -19,8 +19,10 @@ const conf = {
     // 每页最大数据量
     pageSizeMax: 50,
   },
-  // base url
+  // cms api base url
   baseURL: 'http://localhost:1337',
+  // 文章明细，是否在当前页面打开
+  showDetailSelf: true,
 };
 
 export default conf;

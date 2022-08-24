@@ -89,7 +89,7 @@ const parseDetail = (detail: any): Article => {
       description,
       updatedAt,
       createdAt,
-      locale,
+      locale: locale === 'zh-Hans' ? 'zh' : locale, // 前后端对语言key定义不一致，使用之前，需要处理成和前端一致。
     };
   });
 

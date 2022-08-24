@@ -1,16 +1,13 @@
 import type { NextPage } from 'next';
-import { dehydrate, useQuery } from '@tanstack/react-query';
+import { dehydrate } from '@tanstack/react-query';
 import queryClient from 'core/queryClient';
 import { loadTranslations } from 'ni18n';
 import { ni18nConfig } from '../../ni18n.config';
 import PageHeader from 'components/pageHeader';
 import Layout from 'components/layout';
-import { queryKeys } from 'core/queryConsts';
-import { getArticle } from 'http/articles';
-import { useTranslation } from 'react-i18next';
 import { useRouter } from 'next/router';
-import useUserInfo from 'hooks/useUserInfo';
-import { useAppContext } from 'store/index';
+
+import ArticleDetail from 'components/ArticleDetail';
 
 export const getStaticPaths = async ({ locales }: { locales: string[] }) => {
   const paths = locales?.map((locale) => ({ params: { id: 'null' }, locale }));
@@ -41,39 +38,13 @@ export const getStaticProps = async ({
 };
 
 const Article: NextPage<{ id: string }> = ({ id }) => {
-  const { t } = useTranslation();
   const router = useRouter();
-  const { userInfo } = useUserInfo();
-  const { article, setArticle } = useAppContext();
-
-  const query = () => {
-    let options = {};
-    if (router.locale) {
-      options = {
-        ...options,
-        locale: [router.locale === 'zh' ? 'zh-Hans' : 'en'],
-      };
-    }
-    return getArticle(userInfo?.jwt!, id, options).then(setArticle);
-  };
-
-  useQuery(
-    queryKeys.filterArticles({
-      id,
-      locale: router.locale,
-    }),
-    query,
-    {
-      // 存在令牌才可以发起查询
-      enabled: !!userInfo?.jwt && !!id && router.isReady,
-    }
-  );
 
   return (
     <>
       <PageHeader title={'Article Detail'} />
       <Layout>
-        <div>{article && article.content}</div>
+        <ArticleDetail id={(router.query?.id as string) ?? id} />
       </Layout>
     </>
   );

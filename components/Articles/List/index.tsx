@@ -50,7 +50,7 @@ const List = () => {
     if (router.locale) {
       options = {
         ...options,
-        locale: [router.locale === 'zh' ? 'zh-Hans' : 'en'],
+        locale: [router.locale === 'zh' ? 'zh-Hans' : 'en'], // 发送之前，需要处理成和后端一致。
       };
     }
 
@@ -124,7 +124,7 @@ const List = () => {
                   <div>{dayjs.utc(row.updatedAt).local().format('YYYY-MM-DD HH:mm:ss')}</div>
                   <Link
                     href={{ pathname: '/article/[id]', query: { id: row.id } }}
-                    self={false}
+                    self={conf.showDetailSelf}
                     className="btn btn-outline btn-ghost btn-sm rounded-none border-gray-300 px-8 text-gray-400"
                   >
                     了解更多
