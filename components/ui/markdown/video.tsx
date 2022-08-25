@@ -33,7 +33,6 @@ const Video = (props: React.DetailedHTMLProps<React.VideoHTMLAttributes<HTMLVide
     <div className="relative cursor-pointer" onClick={enterFullscreen}>
       <video
         id={`full-screenVideo-${props.src}`}
-        {...props}
         controls={isWeChat}
         playsInline
         x5-video-player-type="h5"
@@ -45,6 +44,7 @@ const Video = (props: React.DetailedHTMLProps<React.VideoHTMLAttributes<HTMLVide
         autoPlay={!isWeChat}
         loop={!isWeChat}
         preload="auto"
+        {...props}
       />
     </div>
   );
