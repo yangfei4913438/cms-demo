@@ -12,8 +12,8 @@ interface Articles {
     url: string;
     provider: string;
   };
-  categories: string[];
-  tags: string[];
+  categories: { id: string; name: string }[];
+  tags: { id: string; name: string }[];
   updatedAt: string;
   createdAt: string;
 }

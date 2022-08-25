@@ -93,8 +93,24 @@ const ArticleDetail: FC<IArticleDetail> = ({ id }) => {
         {detail && (
           <div className="space-y-2">
             <h2 className="!my-0 text-3xl font-bold dark:text-white">{detail.title}</h2>
-            <p className="text-gray-5 hover:border-gray-7 text-base">
-              {t('updated')} {formatTime(detail.updatedAt)}
+            <p className="text-gray-5 hover:border-gray-7 space-x-4 text-base">
+              <span>
+                {t('updated')} {formatTime(detail.updatedAt)}
+              </span>
+              <span>
+                {detail.categories.map((o) => (
+                  <label className="badge badge-secondary" key={o.id}>
+                    {o.name}
+                  </label>
+                ))}
+              </span>
+              <span className="space-x-1">
+                {detail.tags.map((o) => (
+                  <label className="badge badge-primary" key={o.id}>
+                    {o.name}
+                  </label>
+                ))}
+              </span>
             </p>
           </div>
         )}
