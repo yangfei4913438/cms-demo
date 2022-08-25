@@ -2,22 +2,25 @@ import qs from 'qs';
 import conf from 'conf';
 
 const createOptions = (options: object = {}, isDetail: boolean = false) => {
-  // 需要的字段
-  const infoFields = ['title', 'description', 'updatedAt', 'createdAt'];
-  const fullFields = ['title', 'content', 'description', 'updatedAt', 'createdAt'];
+  // 需要的字段明细
+  const infoFields = ['title', 'description', 'updatedAt', 'createdAt', 'locale'];
+  const fullFields = ['title', 'content', 'description', 'updatedAt', 'createdAt', 'locale'];
 
+  // 基础字段
   const base = {
     images: {
       fields: ['name', 'width', 'height', 'hash', 'url', 'provider'],
     },
     tags: { fields: ['name'] },
-    categories: { fields: ['name'] }
+    categories: { fields: ['name'] },
   };
 
+  // 文章详情
   const detail = {
     ...base,
-    localizations: { data: { fields: fullFields } },
-  }
+    // 多语言因为没有提供关联信息，所以不能作为明细直接使用，只能取概要信息
+    localizations: { fields: infoFields },
+  };
 
   return qs.stringify(
     {
@@ -69,6 +72,7 @@ const parseDetail = (detail: any): Article => {
       title,
       description,
       content,
+      locale,
       images: {
         // 标题图只有一个，所以数据结构是这样的。
         data: {
@@ -76,6 +80,8 @@ const parseDetail = (detail: any): Article => {
         },
       },
       localizations: { data },
+      categories: { data: cData },
+      tags: { data: tData },
       updatedAt,
       createdAt,
     },
@@ -84,13 +90,12 @@ const parseDetail = (detail: any): Article => {
   const locales: OtherArticle[] = data.map((row: any) => {
     const {
       id,
-      attributes: { title, content, description, updatedAt, createdAt, locale },
+      attributes: { title, description, updatedAt, createdAt, locale },
     } = row;
 
     return {
       id,
       title,
-      content,
       description,
       updatedAt,
       createdAt,
@@ -98,13 +103,19 @@ const parseDetail = (detail: any): Article => {
     };
   });
 
+  const categories = cData.map((row: any) => ({ id: row.id, name: row.attributes.name }));
+  const tags = tData.map((row: any) => ({ id: row.id, name: row.attributes.name }));
+
   return {
     id,
     title,
     content,
     description,
+    locale: locale === 'zh-Hans' ? 'zh' : locale, // 前后端对语言key定义不一致，使用之前，需要处理成和前端一致。,
     image: { name, url, width, height, provider, hash },
     locales,
+    categories,
+    tags,
     updatedAt,
     createdAt,
   };
@@ -118,22 +129,33 @@ const parseData = (data: any[]): Articles[] => {
       attributes: {
         title,
         description,
+        locale,
         images: {
           // 标题图只有一个，所以数据结构是这样的。
           data: {
             attributes: { name, url, width, height, provider, hash },
           },
         },
+        categories: { data: cData },
+        tags: { data: tData },
         updatedAt,
         createdAt,
       },
-    }) => ({
-      id,
-      title,
-      description,
-      image: { name, url, width, height, provider, hash },
-      updatedAt,
-      createdAt,
-    })
+    }) => {
+      const categories = cData.map((row: any) => ({ id: row.id, name: row.attributes.name }));
+      const tags = tData.map((row: any) => ({ id: row.id, name: row.attributes.name }));
+
+      return {
+        id,
+        title,
+        description,
+        locale: locale === 'zh-Hans' ? 'zh' : locale, // 前后端对语言key定义不一致，使用之前，需要处理成和前端一致。,
+        image: { name, url, width, height, provider, hash },
+        categories,
+        tags,
+        updatedAt,
+        createdAt,
+      };
+    }
   );
 };

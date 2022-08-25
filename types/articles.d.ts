@@ -3,6 +3,7 @@ interface Articles {
   id: number;
   title: string;
   description: string;
+  locale: string;
   image: {
     name: string;
     width: number;
@@ -11,15 +12,17 @@ interface Articles {
     url: string;
     provider: string;
   };
+  categories: string[];
+  tags: string[];
   updatedAt: string;
   createdAt: string;
 }
 
+// 文章其他语言的概要数据
 interface OtherArticle {
   id: number;
   title: string;
   description: string;
-  content: string;
   locale: string;
   updatedAt: string;
   createdAt: string;

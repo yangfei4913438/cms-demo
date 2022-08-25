@@ -2,7 +2,6 @@ import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useRouter } from 'next/router';
 import useUserInfo from 'hooks/useUserInfo';
-import { useAppContext } from 'store/index';
 import { getArticle } from 'http/articles';
 import { useQuery } from '@tanstack/react-query';
 import { queryKeys } from 'core/queryConsts';
@@ -48,8 +47,7 @@ const ArticleDetail: FC<IArticleDetail> = ({ id }) => {
   const { t } = useTranslation();
   const router = useRouter();
   const { userInfo } = useUserInfo();
-  const { article, setArticle } = useAppContext();
-  const [detail, setDetail] = useState<OtherArticle | Article>();
+  const [detail, setDetail] = useState<Article>();
   const [source, setSource] = useState<MDXRemoteSerializeResult>();
 
   const query = () => {
@@ -60,7 +58,12 @@ const ArticleDetail: FC<IArticleDetail> = ({ id }) => {
         locale: [router.locale === 'zh' ? 'zh-Hans' : 'en'],
       };
     }
-    return getArticle(userInfo?.jwt!, id, options).then(setArticle);
+    return getArticle(userInfo?.jwt!, id, options).then((res) => {
+      // 本地更新
+      setDetail(res);
+      // 更新 markdown
+      parseContent(res.content).then(setSource);
+    });
   };
 
   useQuery(queryKeys.filterArticles({ id }), query, {
@@ -75,22 +78,14 @@ const ArticleDetail: FC<IArticleDetail> = ({ id }) => {
   };
 
   useEffect(() => {
-    if (router.locale && article) {
-      const locales = article.locales.map((o) => o.locale);
-      const isOther = locales.includes(router.locale);
-      if (isOther) {
-        // 根据语言选出对应的内容
-        const row = article.locales.find((o) => o.locale === router.locale)!;
-        setDetail(() => row);
-        // 更新 markdown
-        parseContent(row.content).then(setSource);
-      } else {
-        setDetail(() => article);
-        // 更新 markdown
-        parseContent(article.content).then(setSource);
+    if (router && detail) {
+      // 根据语言选出对应的内容
+      const row = detail.locales.find((o) => o.locale === router.locale)!;
+      if (row) {
+        router.replace('/article/[id]', `/article/${row.id}`, { locale: router.locale });
       }
     }
-  }, [article, article?.locales, router.locale]);
+  }, [detail, detail?.locales, router, router.locale]);
 
   return (
     <div className="flex w-full flex-1 justify-center overflow-auto p-8">

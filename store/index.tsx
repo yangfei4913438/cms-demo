@@ -47,8 +47,6 @@ interface IStoreContext {
   setSort: React.Dispatch<React.SetStateAction<ISort[]>>;
   pagination: IPagination;
   setPagination: React.Dispatch<React.SetStateAction<IPagination>>;
-  article?: Article;
-  setArticle: React.Dispatch<React.SetStateAction<Article | undefined>>;
 }
 
 const initData: IStoreContext = {
@@ -68,7 +66,6 @@ const initData: IStoreContext = {
     total: conf.filters.pageSizeMax,
   },
   setPagination: () => undefined,
-  setArticle: () => undefined,
 };
 
 const StoreContext = createContext<IStoreContext>(initData);
@@ -86,8 +83,6 @@ export const AppWrapper: React.FC<{ children: React.ReactNode }> = ({ children }
   const [sort, setSort] = useState<ISort[]>(initData.sort);
   // 分页数据
   const [pagination, setPagination] = useState<IPagination>(initData.pagination);
-  // 当前文章
-  const [article, setArticle] = useState<Article>();
 
   const state: IStoreContext = {
     userInfo,
@@ -102,8 +97,6 @@ export const AppWrapper: React.FC<{ children: React.ReactNode }> = ({ children }
     setSort,
     pagination,
     setPagination,
-    article,
-    setArticle,
   };
 
   return <StoreContext.Provider value={state}>{children}</StoreContext.Provider>;
