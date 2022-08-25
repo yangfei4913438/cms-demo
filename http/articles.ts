@@ -6,15 +6,22 @@ const createOptions = (options: object = {}, isDetail: boolean = false) => {
   const infoFields = ['title', 'description', 'updatedAt', 'createdAt'];
   const fullFields = ['title', 'content', 'description', 'updatedAt', 'createdAt'];
 
-  const populate = {
+  const base = {
     images: {
       fields: ['name', 'width', 'height', 'hash', 'url', 'provider'],
     },
+    tags: { fields: ['name'] },
+    categories: { fields: ['name'] }
   };
+
+  const detail = {
+    ...base,
+    localizations: { data: { fields: fullFields } },
+  }
 
   return qs.stringify(
     {
-      populate: isDetail ? { ...populate, localizations: { data: { fields: fullFields } } } : populate,
+      populate: isDetail ? detail : base,
       fields: isDetail ? fullFields : infoFields,
       ...options,
     },
