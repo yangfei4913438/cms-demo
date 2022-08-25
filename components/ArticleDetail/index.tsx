@@ -6,7 +6,7 @@ import { getArticle } from 'http/articles';
 import { useQuery } from '@tanstack/react-query';
 import { queryKeys } from 'core/queryConsts';
 import { MDXRemote, type MDXRemoteSerializeResult } from 'next-mdx-remote';
-import Link from 'next/link';
+import NextLink from 'components/ui/nextLink';
 import MDVideo from 'components/ui/markdown/video';
 import MDImage from 'components/ui/markdown/image';
 import MDPre from 'components/ui/markdown/pre';
@@ -14,6 +14,7 @@ import React, { DOMElement, FC } from 'react';
 import { serialize } from 'next-mdx-remote/serialize';
 import { formatTime } from 'utils/times';
 import rehypeHighlight from 'rehype-highlight';
+import conf from 'conf';
 
 const components = {
   nextLink: (props: {
@@ -26,7 +27,7 @@ const components = {
     // title属性(seo权重1份)
     title?: string;
   }) => {
-    return <Link {...props} />;
+    return <NextLink {...props} />;
   },
   pre: (props: { className: string; children: DOMElement<any, any> }) => {
     return <MDPre className={props.className}>{props.children}</MDPre>;
@@ -88,30 +89,37 @@ const ArticleDetail: FC<IArticleDetail> = ({ id }) => {
   }, [detail, detail?.locales, router, router.locale]);
 
   return (
-    <div className="flex w-full flex-1 justify-center overflow-auto p-8">
+    <div className="mx-auto max-w-screen-lg overflow-auto p-8">
       <div className="prose prose-lg max-w-none">
         {detail && (
           <div className="space-y-2">
             <h2 className="!my-0 text-3xl font-bold dark:text-white">{detail.title}</h2>
-            <p className="text-gray-5 hover:border-gray-7 space-x-4 text-base">
-              <span>
-                {t('updated')} {formatTime(detail.updatedAt)}
-              </span>
-              <span>
+            <div className="text-gray-5 flex space-x-4 text-base">
+              <div className="space-x-1">
+                <span className="font-bold">{t('filter.sort.updatedAt')}:</span> {formatTime(detail.updatedAt)}
+              </div>
+              <div className="space-x-1">
+                <span className="font-bold">{t('categories')}:</span>
                 {detail.categories.map((o) => (
                   <label className="badge badge-secondary" key={o.id}>
                     {o.name}
                   </label>
                 ))}
-              </span>
-              <span className="space-x-1">
-                {detail.tags.map((o) => (
-                  <label className="badge badge-primary" key={o.id}>
-                    {o.name}
-                  </label>
+              </div>
+              <div className="space-x-1">
+                <span className="font-bold">{t('tags')}:</span>
+                {detail.tags.map((row) => (
+                  <NextLink
+                    href={{ pathname: '/tag/[id]', query: { id: row.id } }}
+                    self={conf.showDetailSelf}
+                    className="badge badge-primary no-underline"
+                    key={row.id}
+                  >
+                    {row.name}
+                  </NextLink>
                 ))}
-              </span>
-            </p>
+              </div>
+            </div>
           </div>
         )}
         {source && (

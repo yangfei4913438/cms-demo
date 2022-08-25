@@ -12,7 +12,7 @@ import { DesktopDateTimePicker } from '@mui/x-date-pickers/DesktopDateTimePicker
 const TimeRange = () => {
   const { t } = useTranslation();
   const router = useRouter();
-  const { time, setTime, search, sort, pagination } = useAppContext();
+  const { time, setTime, search, sort, pagination, tagId } = useAppContext();
 
   const [visible, setVisible] = useState(conf.filters.timeRange);
   const [localTime, setLocalTime] = useState(time);
@@ -30,6 +30,7 @@ const TimeRange = () => {
           visible: pagination.visible,
         },
         locale: router.locale,
+        tagId,
       })
     );
   };

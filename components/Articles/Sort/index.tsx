@@ -10,7 +10,7 @@ import { useTranslation } from 'react-i18next';
 const Sort = () => {
   const { t } = useTranslation();
   const router = useRouter();
-  const { time, search, sort: globalSort, setSort, pagination } = useAppContext();
+  const { time, search, sort: globalSort, setSort, pagination, tagId } = useAppContext();
 
   const [visible, setVisible] = useState(conf.filters.sort);
 
@@ -39,6 +39,7 @@ const Sort = () => {
           visible: pagination.visible,
         },
         locale: router.locale,
+        tagId,
       })
     );
   };

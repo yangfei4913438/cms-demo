@@ -1,5 +1,5 @@
 import dayjs from 'dayjs';
-import Link from 'components/ui/nextLink';
+import NextLink from 'components/ui/nextLink';
 import { useQuery } from '@tanstack/react-query';
 import { queryKeys } from 'core/queryConsts';
 import { getArticles } from 'http/articles';
@@ -9,15 +9,16 @@ import { formatTime } from 'utils/times';
 import { useRouter } from 'next/router';
 import { useTranslation } from 'react-i18next';
 import conf from 'conf';
+import { FC } from 'react';
 
-const List = () => {
+const List: FC<{ isTag: boolean }> = ({ isTag }) => {
   const { t } = useTranslation();
   const router = useRouter();
   const { userInfo } = useUserInfo();
-  const { list, setList, search, time, sort, pagination, setPagination } = useAppContext();
+  const { list, setList, search, time, sort, pagination, setPagination, tagId } = useAppContext();
 
   const query = () => {
-    let options = {};
+    let options: { [key: string]: any } = {};
     if (pagination.visible) {
       options = {
         pagination: {
@@ -53,6 +54,19 @@ const List = () => {
         locale: [router.locale === 'zh' ? 'zh-Hans' : 'en'], // 发送之前，需要处理成和后端一致。
       };
     }
+    if (tagId && isTag) {
+      options = {
+        ...options,
+        filters: {
+          ...(options['filters'] ?? {}),
+          tags: {
+            id: {
+              $eq: tagId,
+            },
+          },
+        },
+      };
+    }
 
     return getArticles(userInfo?.jwt!, options).then((res) => {
       setList(res.list);
@@ -76,11 +90,12 @@ const List = () => {
         visible: pagination.visible,
       },
       locale: router.locale,
+      tagId,
     }),
     query,
     {
       // 存在令牌才可以发起查询
-      enabled: !!userInfo?.jwt,
+      enabled: !!userInfo?.jwt && (isTag ? !!tagId : true),
     }
   );
 
@@ -116,13 +131,13 @@ const List = () => {
                 <div className="mt-2 w-full flex-1 text-gray-500">{row.description}</div>
                 <div className="flex w-full items-center justify-between">
                   <div>{dayjs.utc(row.updatedAt).local().format('YYYY-MM-DD HH:mm:ss')}</div>
-                  <Link
+                  <NextLink
                     href={{ pathname: '/article/[id]', query: { id: row.id } }}
                     self={conf.showDetailSelf}
-                    className="btn btn-outline btn-ghost btn-sm rounded-none border-gray-300 px-8 text-gray-400"
+                    className="btn btn-outline btn-ghost btn-sm rounded-none border-gray-300 px-8 capitalize text-gray-400"
                   >
-                    了解更多
-                  </Link>
+                    {t('learn_more')}
+                  </NextLink>
                 </div>
               </div>
             </div>

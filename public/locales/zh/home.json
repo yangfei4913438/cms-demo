@@ -13,6 +13,7 @@
   "updated": "更新",
   "no_login_text": "\uD83E\uDD23 哎呀，你还没登录呢～",
   "no_data_text": "\uD83E\uDD23 哎呀，没有数据显示哦～",
+  "learn_more": "了解更多",
   "filter.button": "筛选",
   "filter.search": "模糊匹配",
   "filter.search.placeholder": "请输入匹配关键字",
@@ -34,5 +35,7 @@
   "filter.pagination.home_page": "首页",
   "filter.pagination.prev_page": "首页",
   "filter.pagination.next_page": "首页",
-  "filter.pagination.last_page": "尾页"
+  "filter.pagination.last_page": "尾页",
+  "tags": "标签",
+  "categories": "分类"
 }

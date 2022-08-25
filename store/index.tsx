@@ -38,7 +38,7 @@ interface IStoreContext {
   userInfo?: IUserInfo;
   setUserInfo: React.Dispatch<React.SetStateAction<IUserInfo | undefined>>;
   list?: Articles[];
-  setList: React.Dispatch<React.SetStateAction<any[] | undefined>>;
+  setList: React.Dispatch<React.SetStateAction<Articles[] | undefined>>;
   search: string;
   setSearch: React.Dispatch<React.SetStateAction<string>>;
   time: ITime;
@@ -47,6 +47,8 @@ interface IStoreContext {
   setSort: React.Dispatch<React.SetStateAction<ISort[]>>;
   pagination: IPagination;
   setPagination: React.Dispatch<React.SetStateAction<IPagination>>;
+  tagId?: string;
+  setTagId: React.Dispatch<React.SetStateAction<string | undefined>>;
 }
 
 const initData: IStoreContext = {
@@ -66,6 +68,7 @@ const initData: IStoreContext = {
     total: conf.filters.pageSizeMax,
   },
   setPagination: () => undefined,
+  setTagId: () => undefined,
 };
 
 const StoreContext = createContext<IStoreContext>(initData);
@@ -83,6 +86,8 @@ export const AppWrapper: React.FC<{ children: React.ReactNode }> = ({ children }
   const [sort, setSort] = useState<ISort[]>(initData.sort);
   // 分页数据
   const [pagination, setPagination] = useState<IPagination>(initData.pagination);
+  // 选择的标签
+  const [tagId, setTagId] = useState<string>();
 
   const state: IStoreContext = {
     userInfo,
@@ -97,6 +102,8 @@ export const AppWrapper: React.FC<{ children: React.ReactNode }> = ({ children }
     setSort,
     pagination,
     setPagination,
+    tagId,
+    setTagId,
   };
 
   return <StoreContext.Provider value={state}>{children}</StoreContext.Provider>;

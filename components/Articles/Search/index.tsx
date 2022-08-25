@@ -10,7 +10,7 @@ const Search = () => {
   const { t } = useTranslation();
   const router = useRouter();
   const [visible, setVisible] = useState(conf.filters.search);
-  const { setSearch, time, sort, pagination } = useAppContext();
+  const { setSearch, time, sort, pagination, tagId } = useAppContext();
   const [localSearch, setLocalSearch] = useState('');
 
   const handleSearch = async (key: string = localSearch) => {
@@ -26,6 +26,7 @@ const Search = () => {
           visible: pagination.visible,
         },
         locale: router.locale,
+        tagId,
       })
     );
   };

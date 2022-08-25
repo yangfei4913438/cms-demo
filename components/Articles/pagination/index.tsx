@@ -10,7 +10,7 @@ import { useTranslation } from 'react-i18next';
 const Pagination = () => {
   const { t } = useTranslation();
   const router = useRouter();
-  const { search, time, sort, pagination, setPagination } = useAppContext();
+  const { search, time, sort, pagination, setPagination, tagId } = useAppContext();
 
   const handleSwitch = async (e: ChangeEvent<HTMLInputElement>) => {
     if (!e.target.checked) {
@@ -27,6 +27,7 @@ const Pagination = () => {
           sort,
           pagination: { page: 1, pageSize: conf.filters.pageSizeMin, visible: false },
           locale: router.locale,
+          tagId,
         })
       );
     } else {
