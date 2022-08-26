@@ -112,7 +112,6 @@ const TimeRange = () => {
           disabled={!visible}
           value={localTime.end}
           onChange={(date) => {
-            console.log('xxxxx:', date);
             setLocalTime((prevState) => {
               return {
                 ...prevState,
