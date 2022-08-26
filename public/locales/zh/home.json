@@ -33,8 +33,8 @@
   "filter.pagination.page_start": "当前第",
   "filter.pagination.page_end": "页",
   "filter.pagination.home_page": "首页",
-  "filter.pagination.prev_page": "首页",
-  "filter.pagination.next_page": "首页",
+  "filter.pagination.prev_page": "上一页",
+  "filter.pagination.next_page": "下一页",
   "filter.pagination.last_page": "尾页",
   "tags": "标签",
   "categories": "分类"

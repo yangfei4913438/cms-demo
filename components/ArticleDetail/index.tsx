@@ -91,9 +91,9 @@ const ArticleDetail: FC<IArticleDetail> = ({ id }) => {
   return (
     <div className="h-screen w-screen overflow-auto">
       <div className="x-grid py-8 lg:py-16">
-        <div className="prose prose-lg mx-auto max-w-lg lg:col-span-10 lg:max-w-none">
+        <div className="prose prose-lg max-w-lg lg:col-span-10 lg:max-w-none">
           {detail && (
-            <div className="space-y-2">
+            <div className="flex flex-col items-center justify-center space-y-2">
               <h2 className="!my-0 text-3xl font-bold dark:text-white">{detail.title}</h2>
               <div className="text-gray-5 flex space-x-4 text-base">
                 <div className="space-x-1">
