@@ -1,5 +1,11 @@
 import qs from 'qs';
 import conf from 'conf';
+import localcache from 'utils/localCache';
+import dayjs from 'dayjs';
+import utc from 'dayjs/plugin/utc';
+
+// 使用utc时间，兼容不同地区的使用
+dayjs.extend(utc);
 
 const createOptions = (options: object = {}, isDetail: boolean = false) => {
   // 需要的字段明细
@@ -38,30 +44,44 @@ const createOptions = (options: object = {}, isDetail: boolean = false) => {
 export const getArticles = (token: string, options: object = {}) => {
   // 生成查询参数
   const argsStr = createOptions(options);
-  return fetch(`${conf.baseURL}/api/articles?${argsStr}`, {
-    method: 'GET',
-    headers: {
-      Accept: 'application/json',
-      Authorization: `Bearer ${token}`,
-    },
-  })
-    .then((res) => res.json())
-    .then((res) => ({ list: parseData(res.data), pagination: res.meta.pagination }));
+  const key = `/api/articles?${argsStr}`;
+  const url = `${conf.baseURL}${key}`;
+
+  const getData = () => {
+    return fetch(url, {
+      method: 'GET',
+      headers: {
+        Accept: 'application/json',
+        Authorization: `Bearer ${token}`,
+      },
+    })
+      .then((res) => res.json())
+      .then((res) => ({ list: parseData(res.data), pagination: res.meta.pagination }));
+  };
+
+  return localcache.getCache(`GET${key}`, getData);
 };
 
 // 获取文章详情
 export const getArticle = (token: string, id: string, options: object = {}) => {
   // 生成查询参数
   const argsStr = createOptions(options, true);
-  return fetch(`${conf.baseURL}/api/articles/${id}?${argsStr}`, {
-    method: 'GET',
-    headers: {
-      Accept: 'application/json',
-      Authorization: `Bearer ${token}`,
-    },
-  })
-    .then((res) => res.json())
-    .then((res) => parseDetail(res.data));
+  const key = `/api/articles/${id}?${argsStr}`;
+  const url = `${conf.baseURL}${key}`;
+
+  const getData = () => {
+    return fetch(url, {
+      method: 'GET',
+      headers: {
+        Accept: 'application/json',
+        Authorization: `Bearer ${token}`,
+      },
+    })
+      .then((res) => res.json())
+      .then((res) => parseDetail(res.data));
+  };
+
+  return localcache.getCache(`GET${key}`, getData);
 };
 
 // 解析文章

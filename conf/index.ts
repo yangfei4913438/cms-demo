@@ -23,6 +23,13 @@ const conf = {
   baseURL: 'http://localhost:1337',
   // 文章明细，是否在当前页面打开
   showDetailSelf: true,
+  // 本地缓存
+  cache: {
+    enabled: true, // 查询结果是否开启本地缓存
+    expired: 1000 * 60 * 60 * 24 * 7, // 过期时间为7天
+    cleanExpired: true, // 过期的数据是不是要清理掉, 定时任务会根据这里的配置决定要不要删除存储的数据
+    cleanInterval: 1000 * 60 * 10, // 每10分钟执行一次数据清理
+  },
 };
 
 export default conf;

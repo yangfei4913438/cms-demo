@@ -4,7 +4,7 @@ import { useState } from 'react';
 import useUserInfo from 'hooks/useUserInfo';
 import { useRouter } from 'next/router';
 import { useTranslation } from 'react-i18next';
-import storage from 'utils/localStorage';
+import storage from 'utils/localStore';
 
 const Header = () => {
   const router = useRouter();
@@ -34,14 +34,14 @@ const Header = () => {
 
   const handleSwitch = async () => {
     if (router.locale === 'zh') {
-      await router.replace(router.pathname, router.asPath, { locale: 'en', shallow: true }).then(() => {
+      await router.replace(router.pathname, router.asPath, { locale: 'en', shallow: true }).then(async () => {
         // 记录当前使用的语言，页面刷新不会丢失
-        storage.setValue('lang', 'en');
+        await storage.setValue('lang', 'en');
       });
     } else {
-      await router.replace(router.pathname, router.asPath, { locale: 'zh', shallow: true }).then(() => {
+      await router.replace(router.pathname, router.asPath, { locale: 'zh', shallow: true }).then(async () => {
         // 记录当前使用的语言，页面刷新不会丢失
-        storage.setValue('lang', 'zh');
+        await storage.setValue('lang', 'zh');
       });
     }
   };
