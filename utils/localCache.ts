@@ -59,15 +59,15 @@ class LocalCache {
         const utc = res.utcTime;
         // 取出有效时间，计算出过期时间
         const eTime = dayjs(utc).add(res.expired, 'ms');
-        // 对比当前的utc时间，过期时间，判断数据是否过期了，过期就重新请求数据，没过期就直接请求数据
+        // 对比当前的utc时间，过期时间，判断数据是否过期了，没过期就直接返回缓存数据
         if (dayjs().utc() < eTime) {
           // 返回存储的缓存数据
           return res.data;
         }
       }
-      // 存储过期，或者不存在就创新新的请求
+      // 存储过期，或者不存在，就执行新的请求
       const data = await getData();
-      // 更新持久存储
+      // 更新缓存
       await this.setCache(key, data);
       // 返回新获取的数据
       return data;
