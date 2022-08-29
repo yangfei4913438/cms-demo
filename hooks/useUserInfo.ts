@@ -27,8 +27,10 @@ const useUserInfo = () => {
   };
 
   const logout = async () => {
-    await localStorage.delValue('userInfo', conf.encrypt, conf.salt);
+    // 清空内存数据
     setUserInfo(undefined);
+    // 登出后，清理所有的浏览器缓存数据，避免权限不足的用户，访问到需要更多权限的内容(能不能访问到数据，是cms后台控制的，前端无法判断。)
+    await localStorage.clearData();
   };
 
   return {
