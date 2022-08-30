@@ -35,7 +35,7 @@ class LocalCache {
   // 缓存的数据结构
   getNewCache(data: any): ICache {
     return {
-      utcTime: dayjs().utc().toString(),
+      utcTime: dayjs().toISOString(),
       expired: conf.cache.expired,
       data,
     };
@@ -60,7 +60,7 @@ class LocalCache {
         // 取出有效时间，计算出过期时间
         const eTime = dayjs(utc).add(res.expired, 'ms');
         // 对比当前的utc时间，过期时间，判断数据是否过期了，没过期就直接返回缓存数据
-        if (dayjs().utc() < eTime) {
+        if (dayjs() < eTime) {
           // 返回存储的缓存数据
           return res.data;
         }
@@ -94,7 +94,7 @@ class LocalCache {
         // 取出有效时间，计算出过期时间
         const eTime = dayjs(utc).add(res.expired, 'ms');
         // 对比当前的utc时间，过期时间，判断数据是否过期了。如果同时配置了过期删除，这里就要删除该条数据
-        if (dayjs().utc() >= eTime && conf.cache.cleanExpired) {
+        if (dayjs() >= eTime && conf.cache.cleanExpired) {
           await storage.delValue(key, encrypt, salt);
         }
       }
