@@ -7,7 +7,7 @@ import utc from 'dayjs/plugin/utc';
 // 使用utc时间，兼容不同地区的使用
 dayjs.extend(utc);
 
-const createOptions = (options: object = {}, isDetail: boolean = false) => {
+const createOptions = (options: { [key: string]: any } = {}, isDetail: boolean = false) => {
   // 需要的字段明细
   const infoFields = ['title', 'description', 'updatedAt', 'createdAt', 'locale'];
   const fullFields = ['title', 'content', 'description', 'updatedAt', 'createdAt', 'locale'];
@@ -33,6 +33,14 @@ const createOptions = (options: object = {}, isDetail: boolean = false) => {
       populate: isDetail ? detail : base,
       fields: isDetail ? fullFields : infoFields,
       ...options,
+      filters: {
+        ...(options?.filters ?? {}),
+        categories: {
+          id: {
+            $in: [1, 2], // 每个产品的分类都是确定的，不要把其他分类的数据查询过来。这里的两个ID对应不同的语言
+          },
+        },
+      },
     },
     {
       encodeValuesOnly: true, // prettify URL
