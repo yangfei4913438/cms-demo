@@ -37,7 +37,7 @@ const createOptions = (options: { [key: string]: any } = {}, isDetail: boolean =
         ...(options?.filters ?? {}),
         categories: {
           id: {
-            $in: [1, 2], // 每个产品的分类都是确定的，不要把其他分类的数据查询过来。这里的两个ID对应不同的语言
+            $in: conf.categories, // 每个产品的分类都是确定的，不要把其他分类的数据查询过来。这里的两个ID对应不同的语言
           },
         },
       },
