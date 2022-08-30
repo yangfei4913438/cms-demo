@@ -5,10 +5,10 @@ import conf from 'conf';
  * encryptor 加密程序
  * @param {String} str 待加密字符串
  * @param {Number} xor 异或值
- * @param {Number} hex 加密后的进制数
+ * @param {Number} hex 加密后的进制数，默认16进制
  * @return {String} 加密后的字符串
  */
-function encryptor(str: string, xor: number, hex: number) {
+function encryptor(str: string, xor: number, hex: number = 16) {
   let resultList = [];
   hex = hex <= 25 ? hex : hex % 25;
 
@@ -31,10 +31,10 @@ function encryptor(str: string, xor: number, hex: number) {
  * decryptor 解密程序
  * @param {String} str 待加密字符串
  * @param {Number} xor 异或值
- * @param {Number} hex 加密后的进制数
+ * @param {Number} hex 加密后的进制数，默认16进制
  * @return {String} 加密后的字符串
  */
-function decryptor(str: string, xor: number, hex: number) {
+function decryptor(str: string, xor: number, hex: number = 16) {
   let resultList = [];
   hex = hex <= 25 ? hex : hex % 25;
   // 解析出分割字符
@@ -63,8 +63,8 @@ async function setValue<T = any>(key: string, val: T, encrypt: boolean = false, 
 
   // 数据进行加密处理
   if (encrypt) {
-    key = encryptor(key, salt, 16);
-    value = encryptor(value, salt, 16);
+    key = encryptor(key, salt);
+    value = encryptor(value, salt);
   }
 
   await localforage.setItem(key, value);
@@ -74,7 +74,7 @@ async function setValue<T = any>(key: string, val: T, encrypt: boolean = false, 
 async function getValue(key: string, encrypt: boolean = false, salt: number = conf.salt) {
   // 数据进行加密处理
   if (encrypt) {
-    key = encryptor(key, salt, 16);
+    key = encryptor(key, salt);
   }
 
   // 取出序列化的内容
@@ -83,7 +83,7 @@ async function getValue(key: string, encrypt: boolean = false, salt: number = co
   if (value) {
     // 解密
     if (encrypt) {
-      value = decryptor(value, salt, 16);
+      value = decryptor(value, salt);
     }
     // 返回的数据，需要用JSON进行反序列化
     return JSON.parse(value);
@@ -96,7 +96,7 @@ async function getValue(key: string, encrypt: boolean = false, salt: number = co
 async function delValue(key: string, encrypt: boolean = false, salt: number = conf.salt) {
   // 数据进行加密处理
   if (encrypt) {
-    key = encryptor(key, salt, 16);
+    key = encryptor(key, salt);
   }
 
   await localforage.removeItem(key);
@@ -116,7 +116,7 @@ async function clearData() {
 async function getKeys(encrypt: boolean = false, salt: number = conf.salt) {
   const list = await localforage.keys();
   if (encrypt) {
-    return list.map((item) => decryptor(item, salt, 16));
+    return list.map((item) => decryptor(item, salt));
   }
   return list;
 }
