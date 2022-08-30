@@ -42,7 +42,7 @@ class LocalCache {
   }
 
   // 设置缓存数据
-  async setCache(key: string, data: any, encrypt: boolean = false, salt: number = conf.salt) {
+  async setCache(key: string, data: any, encrypt: boolean = conf.encrypt, salt: number = conf.salt) {
     // 生成新的缓存
     const newCache = this.getNewCache(data);
     // 更新存储
@@ -50,7 +50,7 @@ class LocalCache {
   }
 
   // 获取数据
-  async getCache(key: string, getData: Function, encrypt: boolean = false, salt: number = conf.salt) {
+  async getCache(key: string, getData: Function, encrypt: boolean = conf.encrypt, salt: number = conf.salt) {
     // 判断有没有开启缓存
     if (conf.cache.enabled) {
       const res: ICache = await storage.getValue(key, encrypt, salt);
@@ -77,14 +77,14 @@ class LocalCache {
   }
 
   // 删除缓存
-  async delCache(key: string, encrypt: boolean = false, salt: number = conf.salt) {
+  async delCache(key: string, encrypt: boolean = conf.encrypt, salt: number = conf.salt) {
     const res: ICache = await storage.getValue(key, encrypt, salt);
     if (res) {
       await storage.delValue(key, encrypt, salt);
     }
   }
 
-  async job(encrypt: boolean = false, salt: number = conf.salt) {
+  async job(encrypt: boolean = conf.encrypt, salt: number = conf.salt) {
     const list: string[] = await storage.getKeys();
     for (const key of list) {
       const res: ICache = await storage.getValue(key, encrypt, salt);

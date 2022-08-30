@@ -5,12 +5,13 @@ import conf from 'conf';
  * encryptor 加密程序
  * @param {String} str 待加密字符串
  * @param {Number} xor 异或值
- * @param {Number} hex 加密后的进制数，默认16进制
+ * @param {Number} hex 加密后的进制数
  * @return {String} 加密后的字符串
  */
-function encryptor(str: string, xor: number, hex: number = 16) {
+function encryptor(str: string, xor: number, hex: number = conf.defaultHex) {
   let resultList = [];
-  hex = hex <= 25 ? hex : hex % 25;
+  // 取值范围2-36
+  hex = hex <= 36 && hex >= 2 ? hex : hex % 36;
 
   for (let i = 0; i < String(str).length; i++) {
     // 提取字符串每个字符的ascll码
@@ -31,12 +32,13 @@ function encryptor(str: string, xor: number, hex: number = 16) {
  * decryptor 解密程序
  * @param {String} str 待加密字符串
  * @param {Number} xor 异或值
- * @param {Number} hex 加密后的进制数，默认16进制
+ * @param {Number} hex 加密后的进制数
  * @return {String} 加密后的字符串
  */
-function decryptor(str: string, xor: number, hex: number = 16) {
+function decryptor(str: string, xor: number, hex: number = conf.defaultHex) {
   let resultList = [];
-  hex = hex <= 25 ? hex : hex % 25;
+  // 取值范围2-36
+  hex = hex <= 36 && hex >= 2 ? hex : hex % 36;
   // 解析出分割字符
   let splitStr = String.fromCharCode(hex + 97);
   // 分割出加密字符串的加密后的每个字符
@@ -54,7 +56,7 @@ function decryptor(str: string, xor: number, hex: number = 16) {
 }
 
 // 存储数据
-async function setValue<T = any>(key: string, val: T, encrypt: boolean = false, salt: number = conf.salt) {
+async function setValue<T = any>(key: string, val: T, encrypt: boolean = conf.encrypt, salt: number = conf.salt) {
   // 如果用户关闭了本地存储功能，或者使用隐身模式。使用localStorage会让浏览器抛出异常，导致程序无法执行。
   // 所以这里要进行异常处理
 
@@ -71,7 +73,7 @@ async function setValue<T = any>(key: string, val: T, encrypt: boolean = false, 
 }
 
 // 获取数据
-async function getValue(key: string, encrypt: boolean = false, salt: number = conf.salt) {
+async function getValue(key: string, encrypt: boolean = conf.encrypt, salt: number = conf.salt) {
   // 数据进行加密处理
   if (encrypt) {
     key = encryptor(key, salt);
@@ -93,7 +95,7 @@ async function getValue(key: string, encrypt: boolean = false, salt: number = co
 }
 
 // 删除数据
-async function delValue(key: string, encrypt: boolean = false, salt: number = conf.salt) {
+async function delValue(key: string, encrypt: boolean = conf.encrypt, salt: number = conf.salt) {
   // 数据进行加密处理
   if (encrypt) {
     key = encryptor(key, salt);
@@ -113,7 +115,7 @@ async function clearData() {
 /**
  * 获取所有的key
  * */
-async function getKeys(encrypt: boolean = false, salt: number = conf.salt) {
+async function getKeys(encrypt: boolean = conf.encrypt, salt: number = conf.salt) {
   const list = await localforage.keys();
   if (encrypt) {
     return list.map((item) => decryptor(item, salt));
