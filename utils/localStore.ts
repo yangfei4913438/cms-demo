@@ -11,8 +11,12 @@ import conf from 'conf';
 function encryptor(str: string, xor: number, hex: number = conf.defaultHex) {
   let resultList = [];
   // 取值范围2-36
-  hex = hex <= 36 && hex >= 2 ? hex : hex % 36;
-
+  if (hex > 36) {
+    hex = hex % 36;
+  }
+  if (hex < 2) {
+    hex = 2;
+  }
   for (let i = 0; i < String(str).length; i++) {
     // 提取字符串每个字符的ascll码
     const charCode = String(str).charCodeAt(i);
@@ -38,7 +42,12 @@ function encryptor(str: string, xor: number, hex: number = conf.defaultHex) {
 function decryptor(str: string, xor: number, hex: number = conf.defaultHex) {
   let resultList = [];
   // 取值范围2-36
-  hex = hex <= 36 && hex >= 2 ? hex : hex % 36;
+  if (hex > 36) {
+    hex = hex % 36;
+  }
+  if (hex < 2) {
+    hex = 2;
+  }
   // 解析出分割字符
   let splitStr = String.fromCharCode(hex + 97);
   // 分割出加密字符串的加密后的每个字符
