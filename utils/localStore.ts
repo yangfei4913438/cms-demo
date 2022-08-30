@@ -113,8 +113,12 @@ async function clearData() {
 /**
  * 获取所有的key
  * */
-async function getKeys() {
-  return await localforage.keys();
+async function getKeys(encrypt: boolean = false, salt: number = conf.salt) {
+  const list = await localforage.keys();
+  if (encrypt) {
+    return list.map((item) => decryptor(item, salt, 16));
+  }
+  return list;
 }
 
 const storage = {
