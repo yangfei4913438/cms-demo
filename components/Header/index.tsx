@@ -8,7 +8,7 @@ import storage from 'utils/localStore';
 
 const Header = () => {
   const router = useRouter();
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const { userInfo, login, logout } = useUserInfo();
 
   const [edit, setEdit] = useState<{ username: string; password: string }>({
@@ -34,12 +34,18 @@ const Header = () => {
 
   const handleSwitch = async () => {
     if (router.locale === 'zh') {
-      await router.replace(router.pathname, router.asPath, { locale: 'en', shallow: true }).then(async () => {
+      // 无页面刷新切换页面语言
+      await i18n.changeLanguage('en');
+      // 无感知修改url, 更新当前页面的路径而不重新运行
+      await router.push(router.pathname, router.asPath, { locale: 'en', shallow: true }).then(async () => {
         // 记录当前使用的语言，页面刷新不会丢失
         await storage.setValue('lang', 'en');
       });
     } else {
-      await router.replace(router.pathname, router.asPath, { locale: 'zh', shallow: true }).then(async () => {
+      // 无页面刷新切换页面语言
+      await i18n.changeLanguage('zh');
+      // 无感知修改url, 更新当前页面的路径而不重新运行
+      await router.push(router.pathname, router.asPath, { locale: 'zh', shallow: true }).then(async () => {
         // 记录当前使用的语言，页面刷新不会丢失
         await storage.setValue('lang', 'zh');
       });
