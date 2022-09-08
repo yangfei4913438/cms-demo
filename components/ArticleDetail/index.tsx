@@ -93,19 +93,15 @@ const ArticleDetail: FC<IArticleDetail> = ({ id }) => {
       <div className="x-grid py-8 lg:py-16">
         <div className="prose prose-lg max-w-lg lg:col-span-10 lg:max-w-none">
           {detail && (
-            <div className="flex flex-col items-center justify-center space-y-2">
+            <div className="flex flex-col items-center justify-center space-y-4">
               <h2 className="!my-0 text-3xl font-bold dark:text-white">{detail.title}</h2>
-              <div className="text-gray-5 flex space-x-4 text-base">
+              <div className="text-gray-5 flex w-full flex-col space-y-2 self-start border-b pb-6 text-base">
                 <div className="space-x-1">
                   <span className="font-bold">{t('filter.sort.updatedAt')}:</span> {formatTime(detail.updatedAt)}
                 </div>
                 <div className="space-x-1">
                   <span className="font-bold">{t('categories')}:</span>
-                  {detail.categories.map((o) => (
-                    <label className="badge badge-secondary" key={o.id}>
-                      {o.name}
-                    </label>
-                  ))}
+                  <label className="badge badge-secondary">{detail?.category.name}</label>
                 </div>
                 <div className="space-x-1">
                   <span className="font-bold">{t('tags')}:</span>

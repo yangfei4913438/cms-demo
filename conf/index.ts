@@ -6,8 +6,8 @@ const conf = {
   encrypt: false,
   // 默认使用的加密进制，加密进制的取值范围是2-36，其中24-30产生的数据量是最少的。
   defaultHex: 24,
-  // 文章的分类中英文ID，避免请求其他分类的数据
-  categories: [1, 2],
+  // 帮助系统的中英文ID，请求数据，来源只能是帮助文档。
+  system: [3, 4],
   // 筛选面版默认开启配置
   filters: {
     // 模糊搜索
@@ -24,7 +24,9 @@ const conf = {
     pageSizeMax: 50,
   },
   // cms api base url
-  baseURL: 'http://localhost:1337',
+  cmsApi: process.env.NODE_ENV === 'production' ? '' : 'http://localhost:1337',
+  // 本地资源
+  localApi: process.env.NODE_ENV === 'production' ? '' : 'http://localhost:4000',
   // 文章明细，是否在当前页面打开
   showDetailSelf: true,
   // 本地缓存

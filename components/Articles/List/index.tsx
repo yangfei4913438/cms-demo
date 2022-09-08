@@ -112,18 +112,20 @@ const List: FC<{ isTag: boolean }> = ({ isTag }) => {
               style={{ height: 220 }}
               key={row.id}
             >
-              <div
-                className="bg-cover bg-center"
-                style={{
-                  backgroundImage:
-                    row.image.provider === 'local' ? `url('${conf.baseURL}${row.image.url}')` : row.image.url,
-                  width: 360,
-                  minWidth: 360,
-                }}
-              />
+              {row.image && (
+                <div
+                  className="bg-cover bg-center"
+                  style={{
+                    backgroundImage:
+                      row.image.provider === 'local' ? `url('${conf.cmsApi}${row.image.url}')` : row.image.url,
+                    width: 360,
+                    minWidth: 360,
+                  }}
+                />
+              )}
               <div
                 className="flex flex-1 flex-col items-start justify-start p-6"
-                style={{ width: 'calc(100% - 360px)' }}
+                style={{ width: row.image ? 'calc(100% - 360px)' : '100%' }}
               >
                 <div className="flex h-10 w-full items-center text-2xl font-bold">
                   <span className="overflow-hidden overflow-ellipsis whitespace-nowrap">{row.title}</span>

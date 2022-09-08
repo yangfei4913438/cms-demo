@@ -1,24 +1,18 @@
-import qs from 'qs';
 import conf from 'conf';
 import localcache from 'utils/localCache';
-import dayjs from 'dayjs';
-import utc from 'dayjs/plugin/utc';
+import { createOptions } from 'http/helper';
 
-// 使用utc时间，兼容不同地区的使用
-dayjs.extend(utc);
-
-const createOptions = (options: { [key: string]: any } = {}, isDetail: boolean = false) => {
+const createArticleOptions = (options: { [key: string]: any } = {}, isDetail: boolean = false) => {
   // 需要的字段明细
   const infoFields = ['title', 'description', 'updatedAt', 'createdAt', 'locale'];
   const fullFields = ['title', 'content', 'description', 'updatedAt', 'createdAt', 'locale'];
 
   // 基础字段
   const base = {
-    images: {
-      fields: ['name', 'width', 'height', 'hash', 'url', 'provider'],
-    },
+    image: { fields: ['name', 'width', 'height', 'hash', 'url', 'provider'] },
     tags: { fields: ['name'] },
-    categories: { fields: ['name'] },
+    category: { fields: ['name'] },
+    catalogs: { fields: ['name', 'level'] },
   };
 
   // 文章详情
@@ -28,32 +22,19 @@ const createOptions = (options: { [key: string]: any } = {}, isDetail: boolean =
     localizations: { fields: infoFields },
   };
 
-  return qs.stringify(
-    {
-      populate: isDetail ? detail : base,
-      fields: isDetail ? fullFields : infoFields,
-      ...options,
-      filters: {
-        ...(options?.filters ?? {}),
-        categories: {
-          id: {
-            $in: conf.categories, // 每个产品的分类都是确定的，不要把其他分类的数据查询过来。这里的两个ID对应不同的语言
-          },
-        },
-      },
-    },
-    {
-      encodeValuesOnly: true, // prettify URL
-    }
-  );
+  return createOptions({
+    fields: isDetail ? fullFields : infoFields,
+    populate: isDetail ? detail : base,
+    options,
+  });
 };
 
 // 获取文章列表
 export const getArticles = (token: string, options: object = {}) => {
   // 生成查询参数
-  const argsStr = createOptions(options);
+  const argsStr = createArticleOptions(options);
   const key = `/api/articles?${argsStr}`;
-  const url = `${conf.baseURL}${key}`;
+  const url = `${conf.cmsApi}${key}`;
 
   const getData = () => {
     return fetch(url, {
@@ -73,9 +54,9 @@ export const getArticles = (token: string, options: object = {}) => {
 // 获取文章详情
 export const getArticle = (token: string, id: string, options: object = {}) => {
   // 生成查询参数
-  const argsStr = createOptions(options, true);
+  const argsStr = createArticleOptions(options, true);
   const key = `/api/articles/${id}?${argsStr}`;
-  const url = `${conf.baseURL}${key}`;
+  const url = `${conf.cmsApi}${key}`;
 
   const getData = () => {
     return fetch(url, {
@@ -101,19 +82,24 @@ const parseDetail = (detail: any): Article => {
       description,
       content,
       locale,
-      images: {
-        // 标题图只有一个，所以数据结构是这样的。
-        data: {
-          attributes: { name, url, width, height, provider, hash },
-        },
-      },
       localizations: { data },
-      categories: { data: cData },
+      // 标题图只有一个，所以数据结构是这样的。
+      image: { data: iData },
+      category: { data: cData },
       tags: { data: tData },
+      catalogs: { data: clData },
       updatedAt,
       createdAt,
     },
   } = detail;
+
+  const category = { id: cData.id, name: cData.attributes.name };
+  const tags = tData.map((row: any) => ({ id: row.id, name: row.attributes.name }));
+  const catalogs = clData.map((row: any) => ({
+    id: row.id,
+    name: row.attributes.name,
+    level: row.attributes.level,
+  }));
 
   const locales: OtherArticle[] = data.map((row: any) => {
     const {
@@ -131,19 +117,26 @@ const parseDetail = (detail: any): Article => {
     };
   });
 
-  const categories = cData.map((row: any) => ({ id: row.id, name: row.attributes.name }));
-  const tags = tData.map((row: any) => ({ id: row.id, name: row.attributes.name }));
-
   return {
     id,
     title,
     content,
     description,
     locale: locale === 'zh-Hans' ? 'zh' : locale, // 前后端对语言key定义不一致，使用之前，需要处理成和前端一致。,
-    image: { name, url, width, height, provider, hash },
-    locales,
-    categories,
+    image: !!iData
+      ? {
+          name: iData.attributes.name,
+          url: iData.attributes.url,
+          width: iData.attributes.width,
+          height: iData.attributes.height,
+          provider: iData.attributes.provider,
+          hash: iData.attributes.hash,
+        }
+      : undefined,
+    category,
     tags,
+    catalogs,
+    locales,
     updatedAt,
     createdAt,
   };
@@ -158,29 +151,41 @@ const parseData = (data: any[]): Articles[] => {
         title,
         description,
         locale,
-        images: {
-          // 标题图只有一个，所以数据结构是这样的。
-          data: {
-            attributes: { name, url, width, height, provider, hash },
-          },
-        },
-        categories: { data: cData },
+        // 标题图只有一个，所以数据结构是这样的。
+        image: { data: iData },
+        category: { data: cData },
         tags: { data: tData },
+        catalogs: { data: clData },
         updatedAt,
         createdAt,
       },
     }) => {
-      const categories = cData.map((row: any) => ({ id: row.id, name: row.attributes.name }));
+      const category = { id: cData.id, name: cData.attributes.name };
       const tags = tData.map((row: any) => ({ id: row.id, name: row.attributes.name }));
+      const catalogs = clData.map((row: any) => ({
+        id: row.id,
+        name: row.attributes.name,
+        level: row.attributes.level,
+      }));
 
       return {
         id,
         title,
         description,
         locale: locale === 'zh-Hans' ? 'zh' : locale, // 前后端对语言key定义不一致，使用之前，需要处理成和前端一致。,
-        image: { name, url, width, height, provider, hash },
-        categories,
+        image: !!iData
+          ? {
+              name: iData.attributes.name,
+              url: iData.attributes.url,
+              width: iData.attributes.width,
+              height: iData.attributes.height,
+              provider: iData.attributes.provider,
+              hash: iData.attributes.hash,
+            }
+          : undefined,
+        category,
         tags,
+        catalogs,
         updatedAt,
         createdAt,
       };

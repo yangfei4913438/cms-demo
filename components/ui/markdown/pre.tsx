@@ -1,30 +1,23 @@
 import { useTranslation } from 'react-i18next';
-import { uniqueId } from 'lodash';
 import { copyText } from 'utils/mouseHelper';
-import React, { FC, useEffect } from 'react';
+import React, { FC, useRef } from 'react';
+import cx from 'classnames';
 
 interface IProps {
-  className: string;
+  className?: string;
+  iconCLassName?: string;
   children: React.ReactNode;
 }
 
-const Pre: FC<IProps> = ({ className, children }) => {
+const Pre: FC<IProps> = ({ className, iconCLassName = 'text-white', children }) => {
   const { t } = useTranslation('ui');
-
-  // 生成 dom id
-  const id = uniqueId('pre-copy-');
-
-  let dom: HTMLElement;
-  useEffect(() => {
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    dom = document.getElementById(id)!;
-  }, [id]);
+  const ref = useRef<any>();
 
   return (
     <div className={`${className} group relative`}>
       <div
         className="absolute right-1 top-1 hidden cursor-pointer group-hover:block"
-        onClick={(event) => copyText(dom.innerText, t('copy', { result: t('successfully') }), event)}
+        onClick={(event) => copyText(ref.current?.innerText, t('copy', { result: t('successfully') }), event)}
       >
         <button type="button" title={t('copy')} className="pt-1">
           <svg
@@ -33,7 +26,7 @@ const Pre: FC<IProps> = ({ className, children }) => {
             viewBox="0 0 24 24"
             strokeWidth={1.5}
             stroke="currentColor"
-            className="h-5 w-5 text-white"
+            className={cx('h-5 w-5', iconCLassName)}
           >
             <path
               strokeLinecap="round"
@@ -43,7 +36,7 @@ const Pre: FC<IProps> = ({ className, children }) => {
           </svg>
         </button>
       </div>
-      <pre id={id}>{children}</pre>
+      <pre ref={ref}>{children}</pre>
     </div>
   );
 };

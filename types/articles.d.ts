@@ -4,7 +4,7 @@ interface Articles {
   title: string;
   description: string;
   locale: string;
-  image: {
+  image?: {
     name: string;
     width: number;
     height: number;
@@ -12,8 +12,9 @@ interface Articles {
     url: string;
     provider: string;
   };
-  categories: { id: string; name: string }[];
+  category: { id: string; name: string };
   tags: { id: string; name: string }[];
+  catalogs: { id: string; name: string; level: number }[];
   updatedAt: string;
   createdAt: string;
 }
