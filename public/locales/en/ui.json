@@ -1,4 +1,8 @@
 {
   "copy": "Copy{{result}}",
-  "successfully": " Successfully"
+  "successfully": " Successfully",
+  "date.updated": "Updated on ",
+  "date.format": "MMM DD YYYY",
+  "tags": "Tags",
+  "need-time": "Estimated total time to read images and articles is {{times}} seconds"
 }

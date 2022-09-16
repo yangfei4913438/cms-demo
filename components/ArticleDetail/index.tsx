@@ -5,51 +5,22 @@ import useUserInfo from 'hooks/useUserInfo';
 import { getArticle } from 'http/articles';
 import { useQuery } from '@tanstack/react-query';
 import { queryKeys } from 'core/queryConsts';
-import { MDXRemote, type MDXRemoteSerializeResult } from 'next-mdx-remote';
 import NextLink from 'components/ui/nextLink';
-import MDVideo from 'components/ui/markdown/video';
-import MDImage from 'components/ui/markdown/image';
-import MDPre from 'components/ui/markdown/pre';
-import React, { DOMElement, FC } from 'react';
-import { serialize } from 'next-mdx-remote/serialize';
-import { formatTime } from 'utils/times';
-import rehypeHighlight from 'rehype-highlight';
+import React, { type FC } from 'react';
 import conf from 'conf';
-
-const components = {
-  nextLink: (props: {
-    // 超链接
-    href: string;
-    // 自定义类名
-    className?: string;
-    // 是否当前页打开，默认当前页面打开
-    self?: boolean;
-    // title属性(seo权重1份)
-    title?: string;
-  }) => {
-    return <NextLink {...props} />;
-  },
-  pre: (props: { className: string; children: DOMElement<any, any> }) => {
-    return <MDPre className={props.className}>{props.children}</MDPre>;
-  },
-  Video: (props: React.DetailedHTMLProps<React.VideoHTMLAttributes<HTMLVideoElement>, HTMLVideoElement>) => {
-    return <MDVideo {...props} />;
-  },
-  Image: (props: React.DetailedHTMLProps<React.ImgHTMLAttributes<HTMLImageElement>, HTMLImageElement>) => {
-    return <MDImage {...props} />;
-  },
-};
+import Markdown from 'components/ui/markdown';
+import dayjs from 'dayjs';
+import cx from 'classnames';
 
 interface IArticleDetail {
   id: string;
 }
 
 const ArticleDetail: FC<IArticleDetail> = ({ id }) => {
-  const { t } = useTranslation();
+  const { t } = useTranslation('ui');
   const router = useRouter();
   const { userInfo } = useUserInfo();
-  const [detail, setDetail] = useState<Article>();
-  const [source, setSource] = useState<MDXRemoteSerializeResult>();
+  const [article, setArticle] = useState<Article>();
 
   const query = () => {
     let options = {};
@@ -61,9 +32,7 @@ const ArticleDetail: FC<IArticleDetail> = ({ id }) => {
     }
     return getArticle(userInfo?.jwt!, id, options).then((res) => {
       // 本地更新
-      setDetail(res);
-      // 更新 markdown
-      parseContent(res.content).then(setSource);
+      setArticle(res);
     });
   };
 
@@ -72,57 +41,93 @@ const ArticleDetail: FC<IArticleDetail> = ({ id }) => {
     enabled: !!userInfo?.jwt && !!id && router.isReady,
   });
 
-  const parseContent = (content: string) => {
-    return serialize(content, {
-      mdxOptions: { rehypePlugins: [rehypeHighlight] },
-    });
-  };
-
   useEffect(() => {
-    if (router && detail) {
+    if (router && article) {
       // 根据语言选出对应的内容
-      const row = detail.locales.find((o) => o.locale === router.locale)!;
+      const row = article.locales.find((o) => o.locale === router.locale)!;
       if (row) {
         router.replace('/article/[id]', `/article/${row.id}`, { locale: router.locale });
       }
     }
-  }, [detail, detail?.locales, router, router.locale]);
+  }, [article, article?.locales, router, router.locale]);
+
+  const getReadTime = (md: string) => {
+    const str = md + '';
+    const imgs1 = str.split('<img').length - 1;
+    const imgs2 = str.split('<Image').length - 1;
+    const imgs = imgs1 + imgs2;
+    const end = str.replace(/<img.*?src="(.*?)".*?\/?>/gi, '').replace(/<Image.*?src="(.*?)".*?\/?>/gi, '');
+    const strNum = end.length;
+
+    let num = 0;
+    if (imgs > 10) {
+      const len = imgs - 10;
+      num = Array.from({ length: len }, (_, idx) => idx)
+        .map((o) => 12 - o)
+        .reduce((a, b) => a + b);
+    }
+
+    return Math.ceil(strNum / 275 + num + (imgs % 10) * 3);
+  };
 
   return (
     <div className="h-screen w-screen overflow-auto">
       <div className="x-grid py-8 lg:py-16">
         <div className="prose prose-lg max-w-lg lg:col-span-10 lg:max-w-none">
-          {detail && (
-            <div className="flex flex-col items-center justify-center space-y-4">
-              <h2 className="!my-0 text-3xl font-bold dark:text-white">{detail.title}</h2>
-              <div className="text-gray-5 flex w-full flex-col space-y-2 self-start border-b pb-6 text-base">
-                <div className="space-x-1">
-                  <span className="font-bold">{t('filter.sort.updatedAt')}:</span> {formatTime(detail.updatedAt)}
-                </div>
-                <div className="space-x-1">
-                  <span className="font-bold">{t('categories')}:</span>
-                  <label className="badge badge-secondary">{detail?.category.name}</label>
-                </div>
-                <div className="space-x-1">
-                  <span className="font-bold">{t('tags')}:</span>
-                  {detail.tags.map((row) => (
-                    <NextLink
-                      href={{ pathname: '/tag/[id]', query: { id: row.id } }}
-                      self={conf.showDetailSelf}
-                      className="badge badge-primary no-underline"
-                      key={row.id}
+          {article && (
+            <div className="space-y-6">
+              <div className="space-y-4 text-center">
+                <h4 className="text-2xl font-bold">{article.title}</h4>
+                <div className="flex items-center space-x-4 text-sm font-normal text-gray-400">
+                  <span className="flex items-center gap-1">
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      width="16"
+                      height="16"
+                      fill="currentColor"
+                      className="bi bi-calendar3"
+                      viewBox="0 0 16 16"
                     >
-                      {row.name}
+                      <path d="M14 0H2a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2zM1 3.857C1 3.384 1.448 3 2 3h12c.552 0 1 .384 1 .857v10.286c0 .473-.448.857-1 .857H2c-.552 0-1-.384-1-.857V3.857z" />
+                      <path d="M6.5 7a1 1 0 1 0 0-2 1 1 0 0 0 0 2zm3 0a1 1 0 1 0 0-2 1 1 0 0 0 0 2zm3 0a1 1 0 1 0 0-2 1 1 0 0 0 0 2zm-9 3a1 1 0 1 0 0-2 1 1 0 0 0 0 2zm3 0a1 1 0 1 0 0-2 1 1 0 0 0 0 2zm3 0a1 1 0 1 0 0-2 1 1 0 0 0 0 2zm3 0a1 1 0 1 0 0-2 1 1 0 0 0 0 2zm-9 3a1 1 0 1 0 0-2 1 1 0 0 0 0 2zm3 0a1 1 0 1 0 0-2 1 1 0 0 0 0 2zm3 0a1 1 0 1 0 0-2 1 1 0 0 0 0 2z" />
+                    </svg>
+                    {t('date.updated')}
+                    {dayjs.utc(article.updatedAt).local().format(t('date.format'))}
+                  </span>
+                  <span className="flex items-center gap-1">
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      width="16"
+                      height="16"
+                      fill="currentColor"
+                      className="bi bi-stopwatch"
+                      viewBox="0 0 16 16"
+                    >
+                      <path d="M8.5 5.6a.5.5 0 1 0-1 0v2.9h-3a.5.5 0 0 0 0 1H8a.5.5 0 0 0 .5-.5V5.6z" />
+                      <path d="M6.5 1A.5.5 0 0 1 7 .5h2a.5.5 0 0 1 0 1v.57c1.36.196 2.594.78 3.584 1.64a.715.715 0 0 1 .012-.013l.354-.354-.354-.353a.5.5 0 0 1 .707-.708l1.414 1.415a.5.5 0 1 1-.707.707l-.353-.354-.354.354a.512.512 0 0 1-.013.012A7 7 0 1 1 7 2.071V1.5a.5.5 0 0 1-.5-.5zM8 3a6 6 0 1 0 .001 12A6 6 0 0 0 8 3z" />
+                    </svg>
+                    {t('need-time', { times: getReadTime(article.content) })}
+                  </span>
+                </div>
+              </div>
+              <div className="flex h-full w-full space-x-2">
+                <div className="text-sm font-normal">{t('tags')}:</div>
+                <div className={cx('flex flex-1 flex-wrap items-start gap-2 overflow-auto')}>
+                  {article!.tags.map((tag) => (
+                    <NextLink
+                      href={{ pathname: '/tag/[id]', query: { id: tag.id } }}
+                      self={conf.showDetailSelf}
+                      className="badge badge-md badge-primary no-underline"
+                      key={tag.id}
+                    >
+                      {tag.name}
                     </NextLink>
                   ))}
                 </div>
               </div>
+              <div className="divider" />
+              <Markdown content={article.content} className="pb-16" />
             </div>
-          )}
-          {source && (
-            <article className="markdown-area">
-              <MDXRemote {...source} components={components as any} lazy />
-            </article>
           )}
         </div>
       </div>

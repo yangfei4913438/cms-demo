@@ -1,4 +1,8 @@
 {
   "copy": "复制{{result}}",
-  "successfully": "成功"
+  "successfully": "成功",
+  "date.updated": "更新于",
+  "date.format": "YYYY年MMMDD日",
+  "tags": "标签",
+  "need-time": "图片和文章阅读预计一共需要 {{times}} 秒"
 }

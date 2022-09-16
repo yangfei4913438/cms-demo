@@ -1,7 +1,7 @@
 import conf from 'conf';
 
 export const userLogin = (username: string, password: string) => {
-  return fetch(`${conf.baseURL}/api/auth/local`, {
+  return fetch(`${conf.cmsApi}/api/auth/local`, {
     method: 'POST',
     headers: {
       Accept: 'application/json',

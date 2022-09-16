@@ -6,10 +6,10 @@ import cx from 'classnames';
 interface IProps {
   className?: string;
   iconCLassName?: string;
-  children: React.ReactNode;
+  children?: React.ReactNode;
 }
 
-const Pre: FC<IProps> = ({ className, iconCLassName = 'text-white', children }) => {
+const Pre: FC<IProps> = ({ className, iconCLassName, children }) => {
   const { t } = useTranslation('ui');
   const ref = useRef<any>();
 

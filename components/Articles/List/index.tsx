@@ -12,7 +12,8 @@ import conf from 'conf';
 import { FC } from 'react';
 
 const List: FC<{ isTag: boolean }> = ({ isTag }) => {
-  const { t } = useTranslation();
+  const { t } = useTranslation('ui');
+  const { t: h } = useTranslation('home');
   const router = useRouter();
   const { userInfo } = useUserInfo();
   const { list, setList, search, time, sort, pagination, setPagination, tagId } = useAppContext();
@@ -102,7 +103,7 @@ const List: FC<{ isTag: boolean }> = ({ isTag }) => {
   return (
     <>
       {list?.length === 0 && (
-        <div className="flex h-full w-full items-center justify-center text-3xl text-gray-500">{t('no_data_text')}</div>
+        <div className="flex h-full w-full items-center justify-center text-3xl text-gray-500">{h('no_data_text')}</div>
       )}
       <div className="space-y-8 p-6">
         {list?.map((row) => {
@@ -124,21 +125,30 @@ const List: FC<{ isTag: boolean }> = ({ isTag }) => {
                 />
               )}
               <div
-                className="flex flex-1 flex-col items-start justify-start p-6"
+                className="flex flex-1 flex-col items-start justify-start space-y-2 p-6"
                 style={{ width: row.image ? 'calc(100% - 360px)' : '100%' }}
               >
-                <div className="flex h-10 w-full items-center text-2xl font-bold">
-                  <span className="overflow-hidden overflow-ellipsis whitespace-nowrap">{row.title}</span>
-                </div>
-                <div className="mt-2 w-full flex-1 text-gray-500">{row.description}</div>
+                <p className="truncate text-lg font-medium">{row.title}</p>
+                <p className="pb-2 text-sm font-normal">
+                  {row.category.name}
+                  {row.catalogs.length > 0 && <span> | </span>}
+                  {row.catalogs
+                    .sort((a, b) => a.level - b.level)
+                    .map((o) => o.name)
+                    .join(' | ')}
+                </p>
+                <div className="flex-1 text-sm font-normal text-[#7A7A7A]">{row.description}</div>
                 <div className="flex w-full items-center justify-between">
-                  <div>{dayjs.utc(row.updatedAt).local().format('YYYY-MM-DD HH:mm:ss')}</div>
+                  <div className="text-sm font-normal text-[#ccc]">
+                    {t('date.updated')}
+                    {dayjs.utc(row.updatedAt).local().format(t('date.format'))}
+                  </div>
                   <NextLink
                     href={{ pathname: '/article/[id]', query: { id: row.id } }}
                     self={conf.showDetailSelf}
                     className="btn btn-outline btn-ghost btn-sm rounded-none border-gray-300 px-8 capitalize text-gray-400"
                   >
-                    {t('learn_more')}
+                    {h('learn_more')}
                   </NextLink>
                 </div>
               </div>
