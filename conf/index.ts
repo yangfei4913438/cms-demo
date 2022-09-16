@@ -25,8 +25,6 @@ const conf = {
   },
   // cms api base url
   cmsApi: process.env.NODE_ENV === 'production' ? '' : 'http://localhost:1337',
-  // 本地资源
-  localApi: process.env.NODE_ENV === 'production' ? '' : 'http://localhost:4000',
   // 文章明细，是否在当前页面打开
   showDetailSelf: true,
   // 本地缓存
