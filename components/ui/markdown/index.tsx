@@ -21,7 +21,20 @@ const Markdown: FC<MarkdownProps> = ({ content, className }) => {
       <article className="markdown-area">
         <ReactMarkdown
           components={{
+            table: ({ node, ...props }: any) => {
+              return <table {...props} className={cx(props.className, 'not-prose table-auto')} />;
+            },
             pre: ({ node, ...props }: any) => {
+              if (node.children.length > 1) {
+                return (
+                  <>
+                    <MDPre className={props.className} iconCLassName="text-white">
+                      {props.children}
+                    </MDPre>
+                    <>{props.children}</>
+                  </>
+                );
+              }
               return (
                 <MDPre className={props.className} iconCLassName="text-white">
                   {props.children}
@@ -29,9 +42,25 @@ const Markdown: FC<MarkdownProps> = ({ content, className }) => {
               );
             },
             video: ({ node, ...props }: any) => {
+              if (node.children.length > 1) {
+                return (
+                  <>
+                    <MDVideo {...props} />
+                    <>{props.children}</>
+                  </>
+                );
+              }
               return <MDVideo {...props} />;
             },
             img: ({ node, ...props }: any) => {
+              if (node.children.length > 1) {
+                return (
+                  <>
+                    <MDImage {...props} />
+                    <>{props.children}</>
+                  </>
+                );
+              }
               return <MDImage {...props} />;
             },
           }}

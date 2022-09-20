@@ -2,6 +2,24 @@
   // 修复最后一个节点的样式异常
   padding-bottom: 1px;
 
+  // 表格样式
+  table {
+    tr {
+      border-top: 1px solid #c6cbd1;
+      background: #fff;
+    }
+    th, td {
+      padding: 6px 13px;
+      border: 1px solid #dfe2e5;
+    }
+    tr:nth-child(2n) {
+      background: #f6f8fa;
+    }
+    thead tr {
+      background: #f6f8fa;
+    }
+  }
+
   code[class*='language-'],
   pre[class*='language-'] {
     color: #f8f8f2;
