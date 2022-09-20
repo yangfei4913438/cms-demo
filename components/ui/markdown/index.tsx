@@ -24,40 +24,38 @@ const Markdown: FC<MarkdownProps> = ({ content, className }) => {
             table: ({ node, ...props }: any) => {
               return <table {...props} className={cx(props.className, 'not-prose table-auto')} />;
             },
-            pre: ({ node, ...props }: any) => {
+            pre: ({ node, children, ...props }: any) => {
               if (node.children.length > 1) {
                 return (
                   <>
-                    <MDPre className={props.className} iconCLassName="text-white">
-                      {props.children}
-                    </MDPre>
-                    <>{props.children}</>
+                    <MDPre {...props} iconCLassName="text-white" />
+                    <>{children}</>
                   </>
                 );
               }
               return (
-                <MDPre className={props.className} iconCLassName="text-white">
-                  {props.children}
+                <MDPre {...props} iconCLassName="text-white">
+                  {children}
                 </MDPre>
               );
             },
-            video: ({ node, ...props }: any) => {
+            video: ({ node, children, ...props }: any) => {
               if (node.children.length > 1) {
                 return (
                   <>
                     <MDVideo {...props} />
-                    <>{props.children}</>
+                    <>{children}</>
                   </>
                 );
               }
               return <MDVideo {...props} />;
             },
-            img: ({ node, ...props }: any) => {
+            img: ({ node, children, ...props }: any) => {
               if (node.children.length > 1) {
                 return (
                   <>
                     <MDImage {...props} />
-                    <>{props.children}</>
+                    <>{children}</>
                   </>
                 );
               }
