@@ -8,15 +8,48 @@
       border-top: 1px solid #c6cbd1;
       background: #fff;
     }
+
     th, td {
       padding: 6px 13px;
       border: 1px solid #dfe2e5;
     }
+
     tr:nth-child(2n) {
       background: #f6f8fa;
     }
+
     thead tr {
       background: #f6f8fa;
+    }
+  }
+
+  // 单行代码的样式
+  p {
+    code {
+      display: inline-block;
+      background: #e0e0e0;
+      margin-left: 3px;
+      margin-right: 3px;
+      border-radius: 3px;
+      padding: 0.05rem 0.35rem;
+      letter-spacing: 0.2px;
+      font-weight: 500;
+      box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+
+      &::before, &::after {
+        display: none;
+      }
+    }
+  }
+
+  // 代码块
+  pre {
+    .hljs-variable {
+      color: #9876aa;
+    }
+
+    .function_ {
+      color: rgb(255, 198, 109);
     }
   }
 
