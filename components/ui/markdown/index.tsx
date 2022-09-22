@@ -2,6 +2,7 @@ import ReactMarkdown from 'react-markdown';
 import MDPre from 'components/ui/markdown/pre';
 import MDVideo from 'components/ui/markdown/video';
 import MDImage from 'components/ui/markdown/image';
+import Echart from 'components/ui/markdown/echarts/Echart';
 import remarkGfm from 'remark-gfm';
 import remarkMath from 'remark-math';
 import rehypeHighlight from 'rehype-highlight';
@@ -25,6 +26,26 @@ const Markdown: FC<MarkdownProps> = ({ content, className }) => {
               return <table {...props} className={cx(props.className, 'not-prose table-auto')} />;
             },
             pre: ({ node, children, ...props }: any) => {
+              if (node.children.length === 1) {
+                if (node.children[0].properties.className.includes('language-echarts')) {
+                  try {
+                    const option = JSON.parse(node.children[0].children[0].value);
+                    return <Echart echartOptions={option} />;
+                  } catch (e: any) {
+                    return (
+                      <>
+                        <p className="-mb-6">
+                          <strong className="mr-1">Echarts Option Error:</strong>
+                          <code className="text-red-500">{e?.message}</code>
+                        </p>
+                        <MDPre className="mt-0" iconCLassName="text-white">
+                          <code className="hljs language-js">{node.children[0].children[0].value}</code>
+                        </MDPre>
+                      </>
+                    );
+                  }
+                }
+              }
               if (node.children.length > 1) {
                 return (
                   <>
@@ -63,7 +84,7 @@ const Markdown: FC<MarkdownProps> = ({ content, className }) => {
             },
           }}
           remarkPlugins={[remarkGfm, remarkMath]}
-          rehypePlugins={[rehypeHighlight, rehypeKatex, rehypeRaw]}
+          rehypePlugins={[[rehypeHighlight, { ignoreMissing: true }], rehypeKatex, rehypeRaw]}
         >
           {content}
         </ReactMarkdown>
